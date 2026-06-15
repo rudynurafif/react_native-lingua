@@ -1,5 +1,5 @@
 import { useAuth, useClerk, useUser } from "@clerk/expo";
-import { Redirect } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 import { colors } from "@/theme";
@@ -16,6 +16,7 @@ export default function Index() {
   const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const { signOut } = useClerk();
+  const router = useRouter();
 
   if (!isLoaded) {
     return (
@@ -38,8 +39,16 @@ export default function Index() {
 
       <TouchableOpacity
         activeOpacity={0.9}
+        onPress={() => router.push("/languages")}
+        className="mt-8 h-14 items-center justify-center rounded-2xl bg-primary px-8"
+      >
+        <Text className="text-h4 text-background">Choose a language</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        activeOpacity={0.9}
         onPress={() => signOut()}
-        className="mt-8 h-14 items-center justify-center rounded-2xl border border-border px-8"
+        className="mt-4 h-14 items-center justify-center rounded-2xl border border-border px-8"
       >
         <Text className="text-h4 text-ink">Sign out</Text>
       </TouchableOpacity>
