@@ -134,17 +134,6 @@ export const languages: Language[] = [
   },
 ];
 
-/**
- * The handful of languages featured in the "Popular" section of the language
- * selection screen. Listed in the exact order they should appear (most
- * learners first), matching the design reference.
- */
-const POPULAR_IDS: LanguageCode[] = ["es", "fr", "ja", "ko", "de", "zh"];
-
-export const popularLanguages: Language[] = POPULAR_IDS.map(
-  (id) => languages.find((language) => language.id === id)!,
-);
-
 /** Find a single language by its code. */
 export const getLanguage = (id: LanguageCode): Language | undefined =>
   languages.find((language) => language.id === id);

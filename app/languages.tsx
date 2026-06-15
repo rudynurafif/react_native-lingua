@@ -20,7 +20,7 @@ import type { LanguageCode } from "@/types/learning";
 /**
  * Language selection screen.
  *
- * Lets the learner pick a language from the "Popular" list, then confirm.
+ * Lets the learner pick a language from the list, then confirm.
  * Selection is local UI state for now — a later feature will persist the
  * chosen language to a Zustand store.
  */
@@ -30,7 +30,7 @@ export default function Languages() {
   const [selectedId, setSelectedId] = useState<LanguageCode>("es");
   const [query, setQuery] = useState("");
 
-  // Filter the popular list by the search query (case-insensitive).
+  // Filter the language list by the search query (case-insensitive).
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return languages;
@@ -81,8 +81,8 @@ export default function Languages() {
           </View>
         </View>
 
-        {/* Popular list */}
-        <Text className="text-h4 mt-6 px-6 text-ink">Popular</Text>
+        {/* Language list */}
+        <Text className="text-h4 mt-6 px-6 text-ink">All languages</Text>
         <ScrollView
           className="mt-2 flex-1 px-6"
           contentContainerStyle={{ paddingBottom: 8 }}
