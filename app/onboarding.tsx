@@ -114,7 +114,7 @@ export default function Onboarding() {
         {/* Get Started button */}
         <TouchableOpacity
           activeOpacity={0.9}
-          onPress={() => router.back()}
+          onPress={() => router.push("/sign-up")}
           className="mb-4 h-16 flex-row items-center justify-center rounded-2xl bg-primary"
         >
           <Text className="text-h4 text-background">Get Started</Text>
