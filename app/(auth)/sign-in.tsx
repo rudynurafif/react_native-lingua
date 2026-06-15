@@ -10,6 +10,7 @@ export default function SignIn() {
       title="Welcome back"
       subtitle="Log in to continue your journey ✨"
       submitLabel="Sign In"
+      mode="sign-in"
       footerPrompt="Don't have an account?"
       footerActionLabel="Sign up"
       onFooterAction={() => router.replace("/sign-up")}

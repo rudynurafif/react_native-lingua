@@ -10,7 +10,7 @@ export default function SignUp() {
       title="Create your account"
       subtitle="Start your language journey today ✨"
       submitLabel="Sign Up"
-      showPassword
+      mode="sign-up"
       footerPrompt="Already have an account?"
       footerActionLabel="Log in"
       onFooterAction={() => router.replace("/sign-in")}
