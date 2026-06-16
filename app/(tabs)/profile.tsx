@@ -22,9 +22,9 @@ export default function ProfileScreen() {
 
   const language = selectedLanguage ? getLanguage(selectedLanguage) : null;
 
-  // Dev/testing only: wipe persisted storage to retest the onboarding flow.
+  // Dev/testing only: clear the persisted language to retest the onboarding flow.
   const handleClearStorage = async () => {
-    await AsyncStorage.clear();
+    await AsyncStorage.removeItem("language-storage");
     clearLanguage();
   };
 
@@ -84,13 +84,15 @@ export default function ProfileScreen() {
           <Text className="text-h4 text-ink">Sign out</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          activeOpacity={0.9}
-          onPress={handleClearStorage}
-          className="mt-4 h-14 w-full items-center justify-center rounded-2xl border border-border px-8"
-        >
-          <Text className="text-h4 text-ink">Clear storage (test)</Text>
-        </TouchableOpacity>
+        {__DEV__ && (
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={handleClearStorage}
+            className="mt-4 h-14 w-full items-center justify-center rounded-2xl border border-border px-8"
+          >
+            <Text className="text-h4 text-ink">Clear storage (test)</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );

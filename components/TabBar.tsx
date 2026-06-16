@@ -144,10 +144,20 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           }
         };
 
+        // Parity with React Navigation's default tab bar: let screens listen
+        // for long-press on a tab.
+        const onLongPress = () => {
+          navigation.emit({
+            type: "tabLongPress",
+            target: route.key,
+          });
+        };
+
         return (
           <Pressable
             key={route.key}
             onPress={onPress}
+            onLongPress={onLongPress}
             // h-[66px] = ROW_HEIGHT, pt-[21px] = (ROW_HEIGHT - ICON_SIZE) / 2,
             // so the icon's center lands on the sliding circle's center.
             className="h-16.5 flex-1 items-center pt-5.25"
