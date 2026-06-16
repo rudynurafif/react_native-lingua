@@ -116,7 +116,9 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
     <View
       onLayout={onLayout}
-      style={[styles.container, { paddingBottom: insets.bottom || 12 }]}
+      className="flex-row border-t border-border bg-background"
+      // Shadow (platform-specific) + dynamic safe-area padding stay inline.
+      style={[styles.shadow, { paddingBottom: insets.bottom || 12 }]}
     >
       {/* The sliding active indicator, drawn behind the icons. */}
       <Animated.View
@@ -146,16 +148,21 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           <Pressable
             key={route.key}
             onPress={onPress}
-            style={styles.tab}
+            // h-[66px] = ROW_HEIGHT, pt-[21px] = (ROW_HEIGHT - ICON_SIZE) / 2,
+            // so the icon's center lands on the sliding circle's center.
+            className="h-16.5 flex-1 items-center pt-5.25"
             accessibilityRole="button"
             accessibilityState={focused ? { selected: true } : {}}
             accessibilityLabel={label}
           >
-            <View style={styles.iconWrap}>
+            <View className="h-6 items-center justify-center">
               {renderIcon?.(focused, focused ? "#ffffff" : colors.inkMuted)}
             </View>
             {!focused && (
-              <Text style={styles.label} numberOfLines={1}>
+              <Text
+                className="mt-1 text-[11px] leading-3.5 font-poppins-medium text-ink-muted"
+                numberOfLines={1}
+              >
                 {label}
               </Text>
             )}
@@ -167,11 +174,8 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    backgroundColor: colors.background,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
+  // Platform-specific shadow — has no NativeWind equivalent.
+  shadow: {
     ...Platform.select({
       ios: {
         shadowColor: "#000000",
@@ -182,6 +186,7 @@ const styles = StyleSheet.create({
       android: { elevation: 12 },
     }),
   },
+  // Animated.View styles stay in StyleSheet (paired with the animated transform).
   // Centered inside the icon row so it lines up exactly with the active icon.
   circle: {
     position: "absolute",
@@ -191,24 +196,5 @@ const styles = StyleSheet.create({
     height: CIRCLE_SIZE,
     borderRadius: CIRCLE_SIZE / 2,
     backgroundColor: colors.primary,
-  },
-  tab: {
-    flex: 1,
-    height: ROW_HEIGHT,
-    alignItems: "center",
-    // Push the icon down so its center lands on the circle's center.
-    paddingTop: (ROW_HEIGHT - ICON_SIZE) / 2,
-  },
-  iconWrap: {
-    height: ICON_SIZE,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  label: {
-    fontFamily: "Poppins-Medium",
-    fontSize: 11,
-    lineHeight: 14,
-    color: colors.inkMuted,
-    marginTop: 4,
   },
 });
