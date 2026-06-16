@@ -12,6 +12,7 @@ import { getUnitsByLanguage } from "@/data/units";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { colors } from "@/theme";
 import type { LanguageCode } from "@/types/learning";
+import { usePostHog } from "posthog-react-native";
 
 /**
  * Home screen.
@@ -31,6 +32,7 @@ const STREAK_DAYS = 12;
 
 export default function HomeScreen() {
   const router = useRouter();
+  const posthog = usePostHog();
   const { user } = useUser();
 
   // Selected language (persisted). Default to Spanish if somehow unset.
@@ -58,7 +60,10 @@ export default function HomeScreen() {
       title: "Lesson",
       subtitle: lesson?.title ?? "Start learning",
       done: true,
-      onPress: () => router.push("/learn"),
+      onPress: () => {
+        posthog.capture("plan_item_tapped", { item: "lesson", language_code: code });
+        router.push("/learn");
+      },
     },
     {
       key: "conversation",
@@ -67,7 +72,10 @@ export default function HomeScreen() {
       title: "AI Conversation",
       subtitle: chatLesson?.goals[0] ?? "Talk about your day",
       done: false,
-      onPress: () => router.push("/chat"),
+      onPress: () => {
+        posthog.capture("plan_item_tapped", { item: "conversation", language_code: code });
+        router.push("/chat");
+      },
     },
     {
       key: "words",
@@ -78,7 +86,10 @@ export default function HomeScreen() {
       title: "New words",
       subtitle: `${wordCount} words`,
       done: false,
-      onPress: () => router.push("/learn"),
+      onPress: () => {
+        posthog.capture("plan_item_tapped", { item: "words", language_code: code });
+        router.push("/learn");
+      },
     },
   ];
 
@@ -123,13 +134,12 @@ export default function HomeScreen() {
               <Image source={images.streakFire} className="h-6 w-6" contentFit="contain" />
               <Text className="text-h4 ml-1 text-streak">{STREAK_DAYS}</Text>
             </View>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              hitSlop={8}
-              className="ml-4 h-10 w-10 items-center justify-center"
-            >
+            {/* Notifications aren't wired up yet — keep this non-interactive
+                so it doesn't look tappable. Swap to a TouchableOpacity with an
+                onPress when the feature lands. */}
+            <View className="ml-4 h-10 w-10 items-center justify-center">
               <Ionicons name="notifications-outline" size={24} color={colors.ink} />
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -174,7 +184,13 @@ export default function HomeScreen() {
             </Text>
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => router.push("/learn")}
+              onPress={() => {
+                posthog.capture("lesson_continued", {
+                  language_code: code,
+                  unit_order: unit?.order ?? 1,
+                });
+                router.push("/learn");
+              }}
               className="mt-4 self-start rounded-full bg-background px-6 py-2.5"
             >
               <Text className="text-h4 text-primary">Continue</Text>

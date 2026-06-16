@@ -20,10 +20,26 @@ import { colors } from "@/theme";
 
 const CIRCLE_SIZE = 52;
 const ICON_SIZE = 24;
+// The icon font is drawn in a slightly taller line box than the glyph so its
+// descenders (e.g. the chat bubble's tail) aren't clipped by the Text bounds
+// on Android. The glyph stays centered, so we treat ICON_BOX as the icon's
+// effective height for layout/alignment.
+const ICON_BOX = ICON_SIZE + 8;
 // Height of the icon row. The circle is centered inside it (and inside each
 // tab's icon), so the indicator always lines up with the icons and never
 // pokes above the bar.
-const ROW_HEIGHT = 66;
+const ROW_HEIGHT = 76;
+
+/**
+ * Vector icons render as Text, and Android clips glyphs to the Text's measured
+ * height. Giving the icon a taller `lineHeight` adds room below so tall/round
+ * glyphs aren't cut off; it stays visually centered within the box.
+ */
+const ICON_STYLE = {
+  height: ICON_BOX,
+  lineHeight: ICON_BOX,
+  textAlign: "center",
+} as const;
 
 /**
  * Per-route icon. Active tabs use the filled glyph (white, inside the circle);
@@ -38,6 +54,7 @@ const TAB_ICONS: Record<
       name={focused ? "home" : "home-outline"}
       size={ICON_SIZE}
       color={color}
+      style={ICON_STYLE}
     />
   ),
   learn: (focused, color) => (
@@ -45,6 +62,7 @@ const TAB_ICONS: Record<
       name={focused ? "book" : "book-outline"}
       size={ICON_SIZE}
       color={color}
+      style={ICON_STYLE}
     />
   ),
   "ai-teacher": (focused, color) => (
@@ -52,6 +70,7 @@ const TAB_ICONS: Record<
       name={focused ? "robot-happy" : "robot-happy-outline"}
       size={ICON_SIZE}
       color={color}
+      style={ICON_STYLE}
     />
   ),
   chat: (focused, color) => (
@@ -59,6 +78,7 @@ const TAB_ICONS: Record<
       name={focused ? "chatbubble" : "chatbubble-outline"}
       size={ICON_SIZE}
       color={color}
+      style={ICON_STYLE}
     />
   ),
   profile: (focused, color) => (
@@ -66,6 +86,7 @@ const TAB_ICONS: Record<
       name={focused ? "person" : "person-outline"}
       size={ICON_SIZE}
       color={color}
+      style={ICON_STYLE}
     />
   ),
 };
@@ -158,19 +179,19 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             key={route.key}
             onPress={onPress}
             onLongPress={onLongPress}
-            // h-[66px] = ROW_HEIGHT, pt-[21px] = (ROW_HEIGHT - ICON_SIZE) / 2,
+            // h-[76px] = ROW_HEIGHT, pt-[22px] = (ROW_HEIGHT - ICON_BOX) / 2,
             // so the icon's center lands on the sliding circle's center.
-            className="h-16.5 flex-1 items-center pt-5.25"
+            className="h-19 flex-1 items-center pt-5.5"
             accessibilityRole="button"
             accessibilityState={focused ? { selected: true } : {}}
             accessibilityLabel={label}
           >
-            <View className="h-6 items-center justify-center">
+            <View className="h-8 items-center justify-center">
               {renderIcon?.(focused, focused ? "#ffffff" : colors.inkMuted)}
             </View>
             {!focused && (
               <Text
-                className="mt-1 text-[11px] leading-3.5 font-poppins-medium text-ink-muted"
+                className="mt-1.5 text-[11px] leading-3.5 font-poppins-medium text-ink-muted"
                 numberOfLines={1}
               >
                 {label}

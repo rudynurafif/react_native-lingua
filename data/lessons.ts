@@ -262,6 +262,171 @@ export const lessons: Lesson[] = [
     aiTeacherPrompt:
       "You are Luc, a cheerful French teacher. Drill the greetings Bonjour, Au revoir, and Merci. Model the nasal sounds slowly, ask the learner to repeat, and offer light encouragement. Keep responses short and clear.",
   },
+  {
+    id: "fr-unit-1-lesson-2",
+    unitId: "fr-unit-1",
+    languageId: "fr",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 2,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "fr-v-manger", word: "Manger", translation: "To eat", phonetic: "mahn-ZHAY", example: "Je veux manger." },
+      { id: "fr-v-boire", word: "Boire", translation: "To drink", phonetic: "BWAHR" },
+      { id: "fr-v-dormir", word: "Dormir", translation: "To sleep", phonetic: "dor-MEER" },
+      { id: "fr-v-travailler", word: "Travailler", translation: "To work", phonetic: "trah-vah-YAY" },
+    ],
+    phrases: [
+      { id: "fr-p-jai-faim", text: "J'ai faim", translation: "I am hungry", phonetic: "zhay FAHN" },
+    ],
+    activities: [
+      {
+        id: "fr-u1-l2-a1",
+        type: "multipleChoice",
+        prompt: 'What does "Manger" mean?',
+        options: [
+          { id: "o1", text: "To sleep", correct: false },
+          { id: "o2", text: "To eat", correct: true },
+          { id: "o3", text: "To work", correct: false },
+        ],
+      },
+      { id: "fr-u1-l2-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "Boire" },
+    ],
+    aiTeacherPrompt:
+      "You are Luc, a cheerful French teacher. Drill the everyday verbs Manger, Boire, Dormir, and Travailler. Model the pronunciation slowly, ask the learner to repeat, and keep replies short.",
+  },
+  {
+    id: "fr-unit-1-lesson-3",
+    unitId: "fr-unit-1",
+    languageId: "fr",
+    title: "At the Café",
+    type: "chat",
+    order: 3,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for the bill politely"],
+    vocabulary: [
+      { id: "fr-v-un-cafe", word: "Un café", translation: "A coffee", phonetic: "uhn kah-FAY", example: "Un café, s'il vous plaît." },
+      { id: "fr-v-laddition", word: "L'addition", translation: "The bill", phonetic: "lah-dee-SYOHN" },
+      { id: "fr-v-je-voudrais", word: "Je voudrais", translation: "I would like", phonetic: "zhuh voo-DREH" },
+    ],
+    phrases: [
+      { id: "fr-p-je-voudrais-cafe", text: "Je voudrais un café, s'il vous plaît.", translation: "I would like a coffee, please.", phonetic: "zhuh voo-DREH uhn kah-FAY seel voo PLEH" },
+    ],
+    activities: [
+      { id: "fr-u1-l3-a1", type: "translate", prompt: 'Order: "I would like a coffee"', answer: "Je voudrais un café" },
+      {
+        id: "fr-u1-l3-a2",
+        type: "multipleChoice",
+        prompt: 'What does "L\'addition" mean?',
+        options: [
+          { id: "o1", text: "The bill", correct: true },
+          { id: "o2", text: "The menu", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You are Luc, a friendly French tutor role-playing a waiter at a café. Help the learner order with 'Je voudrais ...' and ask for 'l'addition'. Keep the conversation simple, slow, and encouraging.",
+  },
+  {
+    id: "fr-unit-1-lesson-4",
+    unitId: "fr-unit-1",
+    languageId: "fr",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 4,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "fr-v-ou-est", word: "Où est...?", translation: "Where is...?", phonetic: "oo EH" },
+      { id: "fr-v-a-gauche", word: "À gauche", translation: "To the left", phonetic: "ah GOHSH" },
+      { id: "fr-v-a-droite", word: "À droite", translation: "To the right", phonetic: "ah DRWAHT" },
+      { id: "fr-v-tout-droit", word: "Tout droit", translation: "Straight ahead", phonetic: "too DRWAH" },
+    ],
+    phrases: [
+      { id: "fr-p-ou-est-la-gare", text: "Où est la gare?", translation: "Where is the station?", phonetic: "oo EH lah GAHR" },
+    ],
+    activities: [
+      {
+        id: "fr-u1-l4-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "To the left"?',
+        options: [
+          { id: "o1", text: "À gauche", correct: true },
+          { id: "o2", text: "À droite", correct: false },
+        ],
+      },
+      { id: "fr-u1-l4-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "Tout droit" },
+    ],
+    aiTeacherPrompt:
+      "You are Luc, a French pronunciation coach for an audio lesson. Focus on directions: À gauche, À droite, Tout droit, and asking 'Où est...?'. Pronounce each clearly, ask the learner to repeat, and praise good attempts.",
+  },
+  {
+    id: "fr-unit-1-lesson-5",
+    unitId: "fr-unit-1",
+    languageId: "fr",
+    title: "Shopping",
+    type: "vocabulary",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask how much something costs", "Talk about buying things"],
+    vocabulary: [
+      { id: "fr-v-combien", word: "Combien", translation: "How much", phonetic: "kohn-BYAHN" },
+      { id: "fr-v-acheter", word: "Acheter", translation: "To buy", phonetic: "ash-TAY" },
+      { id: "fr-v-le-magasin", word: "Le magasin", translation: "The shop", phonetic: "luh mah-gah-ZAHN" },
+      { id: "fr-v-largent", word: "L'argent", translation: "Money", phonetic: "lar-ZHAHN" },
+    ],
+    phrases: [
+      { id: "fr-p-combien-ca-coute", text: "Combien ça coûte?", translation: "How much does it cost?", phonetic: "kohn-BYAHN sah KOOT" },
+    ],
+    activities: [
+      {
+        id: "fr-u1-l5-a1",
+        type: "multipleChoice",
+        prompt: 'How do you ask "How much"?',
+        options: [
+          { id: "o1", text: "Combien", correct: true },
+          { id: "o2", text: "Acheter", correct: false },
+        ],
+      },
+      { id: "fr-u1-l5-a2", type: "translate", prompt: 'Translate: "To buy"', answer: "Acheter" },
+    ],
+    aiTeacherPrompt:
+      "You are Luc, a cheerful French teacher. Drill shopping words: Combien, Acheter, Le magasin, L'argent, and asking 'Combien ça coûte?'. Keep replies short and encouraging.",
+  },
+  {
+    id: "fr-unit-1-lesson-6",
+    unitId: "fr-unit-1",
+    languageId: "fr",
+    title: "Family & Friends",
+    type: "chat",
+    order: 6,
+    xpReward: 20,
+    goals: ["Talk about your family", "Introduce friends"],
+    vocabulary: [
+      { id: "fr-v-la-famille", word: "La famille", translation: "The family", phonetic: "lah fah-MEE" },
+      { id: "fr-v-un-ami", word: "Un ami", translation: "A friend", phonetic: "uhn ah-MEE" },
+      { id: "fr-v-ma-mere", word: "Ma mère", translation: "My mother", phonetic: "mah MEHR" },
+      { id: "fr-v-mon-pere", word: "Mon père", translation: "My father", phonetic: "mohn PEHR" },
+    ],
+    phrases: [
+      { id: "fr-p-voici-ma-famille", text: "Voici ma famille.", translation: "This is my family.", phonetic: "vwah-SEE mah fah-MEE" },
+    ],
+    activities: [
+      {
+        id: "fr-u1-l6-a1",
+        type: "multipleChoice",
+        prompt: 'What does "Ma mère" mean?',
+        options: [
+          { id: "o1", text: "My father", correct: false },
+          { id: "o2", text: "My mother", correct: true },
+        ],
+      },
+      { id: "fr-u1-l6-a2", type: "translate", prompt: 'Translate: "A friend"', answer: "Un ami" },
+    ],
+    aiTeacherPrompt:
+      "You are Luc, a friendly French tutor. Help the learner talk about family and friends with La famille, Un ami, Ma mère, Mon père. Role-play a short introduction of family members and keep it simple and slow.",
+  },
 
   // =========================================================== Japanese · U1
   {
@@ -324,6 +489,171 @@ export const lessons: Lesson[] = [
     ],
     aiTeacherPrompt:
       "You are Yuki, a gentle Japanese teacher. Teach the greetings こんにちは, ありがとう, and さようなら. Pronounce each syllable clearly, explain the romaji, ask the learner to repeat, and give calm encouragement. Keep replies very short.",
+  },
+  {
+    id: "ja-unit-1-lesson-2",
+    unitId: "ja-unit-1",
+    languageId: "ja",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 2,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "ja-v-taberu", word: "食べる", translation: "To eat", phonetic: "tah-beh-roo", example: "ご飯を食べる。" },
+      { id: "ja-v-nomu", word: "飲む", translation: "To drink", phonetic: "noh-moo" },
+      { id: "ja-v-neru", word: "寝る", translation: "To sleep", phonetic: "neh-roo" },
+      { id: "ja-v-iku", word: "行く", translation: "To go", phonetic: "ee-koo" },
+    ],
+    phrases: [
+      { id: "ja-p-onaka-suita", text: "おなかすいた", translation: "I'm hungry", phonetic: "oh-nah-kah sue-ee-tah" },
+    ],
+    activities: [
+      {
+        id: "ja-u1-l2-a1",
+        type: "multipleChoice",
+        prompt: 'Which word means "To eat"?',
+        options: [
+          { id: "o1", text: "飲む", correct: false },
+          { id: "o2", text: "食べる", correct: true },
+          { id: "o3", text: "行く", correct: false },
+        ],
+      },
+      { id: "ja-u1-l2-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "飲む" },
+    ],
+    aiTeacherPrompt:
+      "You are Yuki, a gentle Japanese teacher. Drill the everyday verbs 食べる, 飲む, 寝る, and 行く. Pronounce each clearly, explain the romaji, ask the learner to repeat, and keep replies very short.",
+  },
+  {
+    id: "ja-unit-1-lesson-3",
+    unitId: "ja-unit-1",
+    languageId: "ja",
+    title: "At the Café",
+    type: "chat",
+    order: 3,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "ja-v-koohii", word: "コーヒー", translation: "Coffee", phonetic: "koh-hee", example: "コーヒーをください。" },
+      { id: "ja-v-omizu", word: "お水", translation: "Water", phonetic: "oh-mee-zoo" },
+      { id: "ja-v-kudasai", word: "ください", translation: "Please (give me)", phonetic: "koo-dah-sai" },
+    ],
+    phrases: [
+      { id: "ja-p-koohii-kudasai", text: "コーヒーをください。", translation: "Coffee, please.", phonetic: "koh-hee oh koo-dah-sai" },
+    ],
+    activities: [
+      { id: "ja-u1-l3-a1", type: "translate", prompt: 'Order: "Coffee, please"', answer: "コーヒーをください" },
+      {
+        id: "ja-u1-l3-a2",
+        type: "multipleChoice",
+        prompt: 'What does "お水" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You are Yuki, a friendly Japanese tutor role-playing a café server. Help the learner order with '...をください'. Mind the polite tone, keep the conversation simple, slow, and encouraging.",
+  },
+  {
+    id: "ja-unit-1-lesson-4",
+    unitId: "ja-unit-1",
+    languageId: "ja",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 4,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "ja-v-doko", word: "どこ", translation: "Where", phonetic: "doh-koh" },
+      { id: "ja-v-migi", word: "右", translation: "Right", phonetic: "mee-ghee" },
+      { id: "ja-v-hidari", word: "左", translation: "Left", phonetic: "hee-dah-ree" },
+      { id: "ja-v-massugu", word: "まっすぐ", translation: "Straight ahead", phonetic: "mahs-soo-goo" },
+    ],
+    phrases: [
+      { id: "ja-p-eki-wa-doko", text: "駅はどこですか？", translation: "Where is the station?", phonetic: "eh-kee wah doh-koh dess-kah" },
+    ],
+    activities: [
+      {
+        id: "ja-u1-l4-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "Right"?',
+        options: [
+          { id: "o1", text: "右", correct: true },
+          { id: "o2", text: "左", correct: false },
+        ],
+      },
+      { id: "ja-u1-l4-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "まっすぐ" },
+    ],
+    aiTeacherPrompt:
+      "You are Yuki, a Japanese pronunciation coach for an audio lesson. Focus on directions: どこ, 右, 左, まっすぐ. Pronounce each clearly, ask the learner to repeat, and praise good attempts.",
+  },
+  {
+    id: "ja-unit-1-lesson-5",
+    unitId: "ja-unit-1",
+    languageId: "ja",
+    title: "Shopping",
+    type: "vocabulary",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask how much something costs", "Talk about buying things"],
+    vocabulary: [
+      { id: "ja-v-ikura", word: "いくら", translation: "How much", phonetic: "ee-koo-rah" },
+      { id: "ja-v-kau", word: "買う", translation: "To buy", phonetic: "kah-oo" },
+      { id: "ja-v-omise", word: "お店", translation: "Shop", phonetic: "oh-mee-seh" },
+      { id: "ja-v-okane", word: "お金", translation: "Money", phonetic: "oh-kah-neh" },
+    ],
+    phrases: [
+      { id: "ja-p-ikura-desu-ka", text: "いくらですか？", translation: "How much is it?", phonetic: "ee-koo-rah dess-kah" },
+    ],
+    activities: [
+      {
+        id: "ja-u1-l5-a1",
+        type: "multipleChoice",
+        prompt: 'Which word means "How much"?',
+        options: [
+          { id: "o1", text: "いくら", correct: true },
+          { id: "o2", text: "買う", correct: false },
+        ],
+      },
+      { id: "ja-u1-l5-a2", type: "translate", prompt: 'Translate: "Money"', answer: "お金" },
+    ],
+    aiTeacherPrompt:
+      "You are Yuki, a gentle Japanese teacher. Drill shopping words: いくら, 買う, お店, お金, and asking 'いくらですか？'. Keep replies short and encouraging.",
+  },
+  {
+    id: "ja-unit-1-lesson-6",
+    unitId: "ja-unit-1",
+    languageId: "ja",
+    title: "Family & Friends",
+    type: "chat",
+    order: 6,
+    xpReward: 20,
+    goals: ["Talk about your family", "Introduce friends"],
+    vocabulary: [
+      { id: "ja-v-kazoku", word: "家族", translation: "Family", phonetic: "kah-zoh-koo" },
+      { id: "ja-v-tomodachi", word: "友達", translation: "Friend", phonetic: "toh-moh-dah-chee" },
+      { id: "ja-v-haha", word: "母", translation: "Mother", phonetic: "hah-hah" },
+      { id: "ja-v-chichi", word: "父", translation: "Father", phonetic: "chee-chee" },
+    ],
+    phrases: [
+      { id: "ja-p-kazoku-desu", text: "これは私の家族です。", translation: "This is my family.", phonetic: "koh-reh wah wah-tah-shee no kah-zoh-koo dess" },
+    ],
+    activities: [
+      {
+        id: "ja-u1-l6-a1",
+        type: "multipleChoice",
+        prompt: 'What does "友達" mean?',
+        options: [
+          { id: "o1", text: "Family", correct: false },
+          { id: "o2", text: "Friend", correct: true },
+        ],
+      },
+      { id: "ja-u1-l6-a2", type: "translate", prompt: 'Translate: "Mother"', answer: "母" },
+    ],
+    aiTeacherPrompt:
+      "You are Yuki, a friendly Japanese tutor. Help the learner talk about family and friends with 家族, 友達, 母, 父. Role-play a short introduction of family members and keep it simple and slow.",
   },
 
   // ============================================================ English · U1
@@ -1044,3 +1374,13 @@ export const getLessonsByLanguage = (languageId: LanguageCode): Lesson[] =>
 /** Find a single lesson by id. */
 export const getLesson = (id: string): Lesson | undefined =>
   lessons.find((lesson) => lesson.id === id);
+
+/**
+ * Image to show for a lesson card/hero.
+ *
+ * Uses the lesson's own `image` when set, otherwise a stable Picsum
+ * placeholder seeded by the lesson id (so the same lesson always gets the
+ * same picture). Pass a `size` to control the square dimensions.
+ */
+export const getLessonImage = (lesson: Lesson, size: number = 240): string =>
+  lesson.image ?? `https://picsum.photos/seed/${lesson.id}/${size}/${size}`;

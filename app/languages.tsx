@@ -17,6 +17,7 @@ import { languages } from "@/data/languages";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { colors } from "@/theme";
 import type { LanguageCode } from "@/types/learning";
+import { usePostHog } from "posthog-react-native";
 
 /**
  * Language selection screen.
@@ -27,6 +28,7 @@ import type { LanguageCode } from "@/types/learning";
  */
 export default function Languages() {
   const router = useRouter();
+  const posthog = usePostHog();
   const setLanguage = useLanguageStore((s) => s.setLanguage);
   const storedLanguage = useLanguageStore((s) => s.selectedLanguage);
 
@@ -48,6 +50,10 @@ export default function Languages() {
   const handleConfirm = () => {
     // Persist the choice, then go to the home route. `replace` so the back
     // gesture doesn't return to language selection after confirming.
+    posthog.capture("language_selected", {
+      language_code: selectedId,
+      is_change: storedLanguage !== null && storedLanguage !== selectedId,
+    });
     setLanguage(selectedId);
     router.replace("/");
   };

@@ -128,6 +128,12 @@ export interface Lesson {
   order: number;
   /** XP awarded on completion. */
   xpReward: number;
+  /**
+   * Optional thumbnail/hero image for the lesson (remote URL).
+   * When missing, the UI falls back to a stable Picsum placeholder keyed by
+   * the lesson id — see `getLessonImage` in `data/lessons.ts`.
+   */
+  image?: string;
   /** What the learner should be able to do after this lesson. */
   goals: string[];
   vocabulary: Vocabulary[];
