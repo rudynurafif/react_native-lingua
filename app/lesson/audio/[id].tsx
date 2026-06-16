@@ -161,7 +161,7 @@ export default function AudioLessonScreen() {
             </View>
 
             {/* Student camera placeholder (top-right corner) — audio only. */}
-            <View
+            {/* <View
               className="absolute right-3 top-3 z-10 h-28 w-20 items-center justify-center overflow-hidden rounded-2xl border-2 border-white"
               style={{ backgroundColor: "#1F2540" }}
             >
@@ -170,7 +170,7 @@ export default function AudioLessonScreen() {
               <View className="absolute bottom-1.5 right-1.5 h-5 w-5 items-center justify-center rounded-full bg-error">
                 <Ionicons name="videocam-off" size={11} color="#ffffff" />
               </View>
-            </View>
+            </View> */}
 
             {/* The AI teacher (fox mascot). */}
             <Image

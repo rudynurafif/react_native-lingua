@@ -36,9 +36,18 @@ export default function RootLayout() {
   // @see https://docs.expo.dev/router/reference/screen-tracking/
   useEffect(() => {
     if (previousPathname.current !== pathname) {
+      // Only forward known-safe params. Spreading every param risks leaking
+      // sensitive values (OAuth codes, tokens, email) into analytics.
+      const SAFE_PARAM_KEYS = new Set(["source", "ref", "campaign"]);
+      const safeParams = Object.fromEntries(
+        Object.entries(params).filter(
+          ([key, value]) => SAFE_PARAM_KEYS.has(key) && value != null,
+        ),
+      );
+
       posthog.screen(pathname, {
         previous_screen: previousPathname.current ?? null,
-        ...params,
+        ...safeParams,
       });
       previousPathname.current = pathname;
     }

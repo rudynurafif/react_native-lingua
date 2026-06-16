@@ -80,12 +80,15 @@ export default function ProfileScreen() {
 
         <TouchableOpacity
           activeOpacity={0.9}
-          onPress={() => {
+          onPress={async () => {
             posthog.capture("user_signed_out", {
               language_code: selectedLanguage,
             });
+            // Flush before reset() so the event still carries the user's
+            // identity, then sign out once it's safely on its way.
+            await posthog.flush();
             posthog.reset();
-            signOut();
+            await signOut();
           }}
           className="mt-4 h-14 w-full items-center justify-center rounded-2xl border border-border px-8"
         >

@@ -1,9 +1,9 @@
-import { useSignIn, useSignUp, useSSO } from "@clerk/expo";
+import { useAuth, useSignIn, useSignUp, useSSO } from "@clerk/expo";
 import { Ionicons } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -84,6 +84,20 @@ export function AuthScreen({
   const { signUp, errors: signUpErrors } = useSignUp();
   const { signIn, errors: signInErrors } = useSignIn();
   const { startSSOFlow } = useSSO();
+  const { isLoaded: authLoaded, isSignedIn, userId } = useAuth();
+
+  // The email flows identify PostHog synchronously (the email is in scope).
+  // OAuth can't: Clerk's user resolves asynchronously after setActive(), so we
+  // flag the pending OAuth sign-in here and identify in the effect below once
+  // Clerk reports the user. Gating on the ref avoids re-identifying email users.
+  const oauthPending = useRef(false);
+
+  useEffect(() => {
+    if (oauthPending.current && authLoaded && isSignedIn && userId) {
+      oauthPending.current = false;
+      posthog.identify(userId);
+    }
+  }, [authLoaded, isSignedIn, userId, posthog]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -266,6 +280,8 @@ export function AuthScreen({
       });
 
       if (createdSessionId && setActive) {
+        // Tell the effect above to identify once Clerk's user resolves.
+        oauthPending.current = true;
         await setActive({ session: createdSessionId });
         posthog.capture("user_signed_in", { method: strategy });
         router.replace("/");
