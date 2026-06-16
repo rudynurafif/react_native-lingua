@@ -14,6 +14,7 @@ import { Image } from "@/components/Image";
 import { LanguageCard } from "@/components/LanguageCard";
 import { images } from "@/constants/images";
 import { languages } from "@/data/languages";
+import { useLanguageStore } from "@/store/useLanguageStore";
 import { colors } from "@/theme";
 import type { LanguageCode } from "@/types/learning";
 
@@ -21,13 +22,18 @@ import type { LanguageCode } from "@/types/learning";
  * Language selection screen.
  *
  * Lets the learner pick a language from the list, then confirm.
- * Selection is local UI state for now — a later feature will persist the
- * chosen language to a Zustand store.
+ * The confirmed choice is persisted to the Zustand language store, which
+ * unlocks the home route.
  */
 export default function Languages() {
   const router = useRouter();
+  const setLanguage = useLanguageStore((s) => s.setLanguage);
+  const storedLanguage = useLanguageStore((s) => s.selectedLanguage);
 
-  const [selectedId, setSelectedId] = useState<LanguageCode>("es");
+  // Pre-select the previously chosen language if there is one, else Spanish.
+  const [selectedId, setSelectedId] = useState<LanguageCode>(
+    storedLanguage ?? "es",
+  );
   const [query, setQuery] = useState("");
 
   // Filter the language list by the search query (case-insensitive).
@@ -40,8 +46,10 @@ export default function Languages() {
   }, [query]);
 
   const handleConfirm = () => {
-    // No store yet — just head back to the home screen for now.
-    router.back();
+    // Persist the choice, then go to the home route. `replace` so the back
+    // gesture doesn't return to language selection after confirming.
+    setLanguage(selectedId);
+    router.replace("/");
   };
 
   return (

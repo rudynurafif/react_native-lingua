@@ -1,24 +1,28 @@
-import { useAuth, useClerk, useUser } from "@clerk/expo";
-import { Redirect, useRouter } from "expo-router";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { useAuth } from "@clerk/expo";
+import { Redirect } from "expo-router";
+import { ActivityIndicator, View } from "react-native";
 
+import { useLanguageStore } from "@/store/useLanguageStore";
 import { colors } from "@/theme";
 
 /**
- * App entry / home route.
+ * App entry gate.
  *
- * - While Clerk restores the session from the token cache, show a spinner.
+ * - While Clerk restores the session (or the language store is hydrating),
+ *   show a spinner.
  * - Signed out → send the user to onboarding.
- * - Signed in → show the home screen (placeholder for now; lessons land here
- *   in a later feature).
+ * - Signed in but no language chosen yet → send to language selection.
+ * - Signed in with a language → enter the tab navigation (Home).
  */
 export default function Index() {
   const { isLoaded, isSignedIn } = useAuth();
-  const { user } = useUser();
-  const { signOut } = useClerk();
-  const router = useRouter();
 
-  if (!isLoaded) {
+  const selectedLanguage = useLanguageStore((s) => s.selectedLanguage);
+  const hasHydrated = useLanguageStore((s) => s.hasHydrated);
+
+  // Wait for both Clerk and the persisted language to be ready before deciding
+  // where to send the user — otherwise we'd flash the wrong screen.
+  if (!isLoaded || !hasHydrated) {
     return (
       <View className="flex-1 items-center justify-center bg-background">
         <ActivityIndicator size="large" color={colors.primary} />
@@ -30,28 +34,9 @@ export default function Index() {
     return <Redirect href="/onboarding" />;
   }
 
-  return (
-    <View className="flex-1 items-center justify-center bg-background px-6">
-      <Text className="text-h1 text-primary">Lingua</Text>
-      <Text className="text-body-md mt-2 text-ink-muted">
-        Signed in as {user?.primaryEmailAddress?.emailAddress ?? "your account"}
-      </Text>
+  if (!selectedLanguage) {
+    return <Redirect href="/languages" />;
+  }
 
-      <TouchableOpacity
-        activeOpacity={0.9}
-        onPress={() => router.push("/languages")}
-        className="mt-8 h-14 items-center justify-center rounded-2xl bg-primary px-8"
-      >
-        <Text className="text-h4 text-background">Choose a language</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        activeOpacity={0.9}
-        onPress={() => signOut()}
-        className="mt-4 h-14 items-center justify-center rounded-2xl border border-border px-8"
-      >
-        <Text className="text-h4 text-ink">Sign out</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  return <Redirect href="/home" />;
 }

@@ -139,6 +139,30 @@ export const getLanguage = (id: LanguageCode): Language | undefined =>
   languages.find((language) => language.id === id);
 
 /**
+ * A friendly "hello" in each language, used to greet the learner on the home
+ * screen (e.g. "Hola, Alex!"). Falls back to English "Hello".
+ */
+const greetings: Record<LanguageCode, string> = {
+  es: "Hola",
+  fr: "Bonjour",
+  ja: "こんにちは",
+  en: "Hello",
+  de: "Hallo",
+  id: "Halo",
+  zh: "你好",
+  it: "Ciao",
+  pt: "Olá",
+  ko: "안녕",
+  ru: "Привет",
+  ar: "مرحبا",
+  hi: "नमस्ते",
+};
+
+/** The greeting word for a language, e.g. "es" -> "Hola". */
+export const getGreeting = (id: LanguageCode): string =>
+  greetings[id] ?? "Hello";
+
+/**
  * Build a flag image URL from a language's `countryCode`.
  * Pass `width` to pick a flagcdn size (e.g. 160, 320, 640).
  */
