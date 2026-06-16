@@ -14,6 +14,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { usePostHog } from "posthog-react-native";
 
 import { Image } from "@/components/Image";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "@/components/SocialIcons";
@@ -77,6 +78,7 @@ export function AuthScreen({
   onFooterAction,
 }: AuthScreenProps) {
   const router = useRouter();
+  const posthog = usePostHog();
   const isSignUp = mode === "sign-up";
 
   const { signUp, errors: signUpErrors } = useSignUp();
@@ -206,6 +208,11 @@ export function AuthScreen({
             setVerifyError(getClerkErrorMessage(finalized.error));
             return;
           }
+          posthog.identify(email.trim(), {
+            $set: { email: email.trim() },
+            $set_once: { first_sign_up_date: new Date().toISOString() },
+          });
+          posthog.capture("user_signed_up");
           finishAuth();
         } else {
           setVerifyError("That code didn't work. Please try again.");
@@ -230,6 +237,10 @@ export function AuthScreen({
             setVerifyError(getClerkErrorMessage(finalized.error));
             return;
           }
+          posthog.identify(email.trim(), {
+            $set: { email: email.trim() },
+          });
+          posthog.capture("user_signed_in");
           finishAuth();
         } else {
           setVerifyError("That code didn't work. Please try again.");
@@ -247,6 +258,7 @@ export function AuthScreen({
   // Browser-based OAuth. Providers must be enabled in the Clerk Dashboard.
   const handleSocial = async (strategy: SocialProvider["strategy"]) => {
     setFormError(null);
+    posthog.capture("social_auth_started", { provider: strategy, mode });
     try {
       const { createdSessionId, setActive } = await startSSOFlow({
         strategy,
@@ -255,6 +267,7 @@ export function AuthScreen({
 
       if (createdSessionId && setActive) {
         await setActive({ session: createdSessionId });
+        posthog.capture("user_signed_in", { method: strategy });
         router.replace("/");
       }
     } catch (err) {

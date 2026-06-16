@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "@/components/Image";
 import { formatLearners, getFlagUrl, getLanguage } from "@/data/languages";
 import { useLanguageStore } from "@/store/useLanguageStore";
+import { usePostHog } from "posthog-react-native";
 
 /**
  * Profile placeholder. The full UI isn't built yet, but it hosts the account
@@ -16,6 +17,7 @@ export default function ProfileScreen() {
   const { user } = useUser();
   const { signOut } = useClerk();
   const router = useRouter();
+  const posthog = usePostHog();
 
   const selectedLanguage = useLanguageStore((s) => s.selectedLanguage);
   const clearLanguage = useLanguageStore((s) => s.clearLanguage);
@@ -78,7 +80,13 @@ export default function ProfileScreen() {
 
         <TouchableOpacity
           activeOpacity={0.9}
-          onPress={() => signOut()}
+          onPress={() => {
+            posthog.capture("user_signed_out", {
+              language_code: selectedLanguage,
+            });
+            posthog.reset();
+            signOut();
+          }}
           className="mt-4 h-14 w-full items-center justify-center rounded-2xl border border-border px-8"
         >
           <Text className="text-h4 text-ink">Sign out</Text>
