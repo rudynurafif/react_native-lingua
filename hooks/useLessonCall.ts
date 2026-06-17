@@ -131,6 +131,14 @@ export function useLessonCall(lesson: Lesson) {
 
       // The call was already reserved server-side, so join without `create`.
       await c.join({ create: false });
+
+      // Push-to-talk: keep the mic muted by default so the AI teacher never
+      // hears itself back through the speaker (no echo). The lesson screen
+      // unmutes the mic only while the user holds the "Hold to talk" button.
+      await c.microphone.disable().catch((err) =>
+        console.error("Could not mute mic on join", err),
+      );
+
       setStatus("active");
       posthog.capture("lesson_call_started", {
         lesson_id: lesson.id,

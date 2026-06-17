@@ -87,7 +87,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Maria, a warm and patient Spanish teacher. In this lesson, drill the greetings Hola, Adiós, and Buenos días. Speak slowly, model the pronunciation, ask the learner to repeat each word, and give gentle encouragement. Keep replies short.",
+      "You're Maria, a warm, bubbly Spanish teacher who lights up when a learner tries. Stick to this greetings lesson — Hola, Adiós, Buenos días — and only these. Say each one slowly, give the English meaning, then cheer them on as they say it back to you.",
   },
   {
     id: "es-unit-1-lesson-2",
@@ -140,7 +140,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Maria, a friendly Spanish tutor. Help the learner introduce themselves using 'Me llamo ...' and ask names with '¿Cómo te llamas?'. Role-play a short introduction, correct mistakes kindly, and keep the conversation simple and slow.",
+      "You're Maria, a warm Spanish tutor who loves a friendly chat. Keep it to this lesson — introducing yourself with 'Me llamo ...', 'Mucho gusto', and asking '¿Cómo te llamas?'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and have them try it again.",
   },
 
   // ============================================================ Spanish · U2
@@ -199,7 +199,73 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Maria, a Spanish pronunciation coach for an audio lesson. Focus on polite words: Por favor, Gracias, De nada. Pronounce each clearly, ask the learner to repeat, and listen for the rolled sounds. Praise good attempts and keep instructions brief.",
+      "You're Maria, an upbeat Spanish pronunciation coach. Stay on this lesson's polite words only — Por favor, Gracias, De nada. Say each one slowly with its meaning, listen closely as they repeat, and react with real warmth, nudging the sounds until they nail it.",
+  },
+  {
+    id: "es-unit-2-lesson-2",
+    unitId: "es-unit-2",
+    languageId: "es",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 2,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "es-v-comer", word: "Comer", translation: "To eat", phonetic: "koh-MEHR", example: "Quiero comer." },
+      { id: "es-v-beber", word: "Beber", translation: "To drink", phonetic: "beh-BEHR" },
+      { id: "es-v-dormir", word: "Dormir", translation: "To sleep", phonetic: "dor-MEER" },
+      { id: "es-v-ir", word: "Ir", translation: "To go", phonetic: "eer" },
+    ],
+    phrases: [
+      { id: "es-p-tengo-hambre", text: "Tengo hambre", translation: "I am hungry", phonetic: "TEN-goh AHM-breh" },
+    ],
+    activities: [
+      {
+        id: "es-u2-l2-a1",
+        type: "multipleChoice",
+        prompt: 'What does "Comer" mean?',
+        options: [
+          { id: "o1", text: "To sleep", correct: false },
+          { id: "o2", text: "To eat", correct: true },
+          { id: "o3", text: "To go", correct: false },
+        ],
+      },
+      { id: "es-u2-l2-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "Beber" },
+    ],
+    aiTeacherPrompt:
+      "You're Maria, a warm Spanish teacher who makes practice feel easy. Stay on this lesson's everyday verbs — Comer, Beber, Dormir, Ir. Bring in one at a time slowly with its English meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "es-unit-2-lesson-3",
+    unitId: "es-unit-2",
+    languageId: "es",
+    title: "At the Café",
+    type: "chat",
+    order: 3,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "es-v-un-cafe", word: "Un café", translation: "A coffee", phonetic: "oon kah-FEH", example: "Un café, por favor." },
+      { id: "es-v-agua", word: "Agua", translation: "Water", phonetic: "AH-gwah" },
+      { id: "es-v-quiero", word: "Quiero", translation: "I want", phonetic: "KYEH-roh" },
+    ],
+    phrases: [
+      { id: "es-p-un-cafe-por-favor", text: "Un café, por favor.", translation: "A coffee, please.", phonetic: "oon kah-FEH pohr fah-VOHR" },
+    ],
+    activities: [
+      { id: "es-u2-l3-a1", type: "translate", prompt: 'Order: "A coffee, please"', answer: "Un café, por favor" },
+      {
+        id: "es-u2-l3-a2",
+        type: "multipleChoice",
+        prompt: 'What does "Agua" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Maria, a friendly Spanish tutor playing a kind café server. Stay in this café scene only — Un café, Agua, Quiero, and ordering 'Un café, por favor.'. Offer one phrase at a time slowly with its meaning, listen to their order, gently fix it, and invite them to try again.",
   },
 
   // ============================================================= French · U1
@@ -260,7 +326,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Luc, a cheerful French teacher. Drill the greetings Bonjour, Au revoir, and Merci. Model the nasal sounds slowly, ask the learner to repeat, and offer light encouragement. Keep responses short and clear.",
+      "You're Luc, a cheerful French teacher with a big smile in your voice. Stay on this greetings lesson — Bonjour, Au revoir, Merci. Say each one slowly with its meaning, then listen as they repeat and cheer the little wins, gently shaping those nasal sounds.",
   },
   {
     id: "fr-unit-1-lesson-2",
@@ -294,7 +360,7 @@ export const lessons: Lesson[] = [
       { id: "fr-u1-l2-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "Boire" },
     ],
     aiTeacherPrompt:
-      "You are Luc, a cheerful French teacher. Drill the everyday verbs Manger, Boire, Dormir, and Travailler. Model the pronunciation slowly, ask the learner to repeat, and keep replies short.",
+      "You're Luc, a cheerful French teacher who makes practice feel easy. Stay on this lesson's everyday verbs — Manger, Boire, Dormir, Travailler. Introduce one at a time slowly with its English meaning, then have the learner say it back and react warmly to each try.",
   },
   {
     id: "fr-unit-1-lesson-3",
@@ -326,7 +392,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Luc, a friendly French tutor role-playing a waiter at a café. Help the learner order with 'Je voudrais ...' and ask for 'l'addition'. Keep the conversation simple, slow, and encouraging.",
+      "You're Luc, a friendly French tutor playing a warm café waiter. Stay in this café scene only — ordering with 'Je voudrais ...', 'un café', and asking for 'l'addition'. Feed one phrase at a time slowly, listen to their order, gently fix it, and invite them to try again.",
   },
   {
     id: "fr-unit-1-lesson-4",
@@ -359,7 +425,7 @@ export const lessons: Lesson[] = [
       { id: "fr-u1-l4-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "Tout droit" },
     ],
     aiTeacherPrompt:
-      "You are Luc, a French pronunciation coach for an audio lesson. Focus on directions: À gauche, À droite, Tout droit, and asking 'Où est...?'. Pronounce each clearly, ask the learner to repeat, and praise good attempts.",
+      "You're Luc, an upbeat French pronunciation coach. Stay on this directions lesson only — À gauche, À droite, Tout droit, and asking 'Où est...?'. Say each slowly with its meaning, listen closely as they repeat, and celebrate every good attempt while nudging the tricky sounds.",
   },
   {
     id: "fr-unit-1-lesson-5",
@@ -392,7 +458,7 @@ export const lessons: Lesson[] = [
       { id: "fr-u1-l5-a2", type: "translate", prompt: 'Translate: "To buy"', answer: "Acheter" },
     ],
     aiTeacherPrompt:
-      "You are Luc, a cheerful French teacher. Drill shopping words: Combien, Acheter, Le magasin, L'argent, and asking 'Combien ça coûte?'. Keep replies short and encouraging.",
+      "You're Luc, a cheerful French teacher who makes shopping practice fun. Stay on this lesson's words — Combien, Acheter, Le magasin, L'argent, and asking 'Combien ça coûte?'. Bring in one at a time slowly with its meaning, then listen and warmly encourage each try.",
   },
   {
     id: "fr-unit-1-lesson-6",
@@ -425,7 +491,7 @@ export const lessons: Lesson[] = [
       { id: "fr-u1-l6-a2", type: "translate", prompt: 'Translate: "A friend"', answer: "Un ami" },
     ],
     aiTeacherPrompt:
-      "You are Luc, a friendly French tutor. Help the learner talk about family and friends with La famille, Un ami, Ma mère, Mon père. Role-play a short introduction of family members and keep it simple and slow.",
+      "You're Luc, a friendly French tutor who loves hearing about people's families. Stay on this lesson — La famille, Un ami, Ma mère, Mon père, and 'Voici ma famille.'. Introduce one word at a time slowly, role-play a tiny family intro, listen, and warmly invite them to try again.",
   },
 
   // =========================================================== Japanese · U1
@@ -488,7 +554,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Yuki, a gentle Japanese teacher. Teach the greetings こんにちは, ありがとう, and さようなら. Pronounce each syllable clearly, explain the romaji, ask the learner to repeat, and give calm encouragement. Keep replies very short.",
+      "You're Yuki, a gentle, warm Japanese teacher who makes beginners feel safe. Stay on this greetings lesson — こんにちは, ありがとう, さようなら. Say each slowly with its romaji and meaning, then listen as they repeat and offer soft, genuine encouragement after every try.",
   },
   {
     id: "ja-unit-1-lesson-2",
@@ -522,7 +588,7 @@ export const lessons: Lesson[] = [
       { id: "ja-u1-l2-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "飲む" },
     ],
     aiTeacherPrompt:
-      "You are Yuki, a gentle Japanese teacher. Drill the everyday verbs 食べる, 飲む, 寝る, and 行く. Pronounce each clearly, explain the romaji, ask the learner to repeat, and keep replies very short.",
+      "You're Yuki, a gentle, encouraging Japanese teacher. Stay on this lesson's everyday verbs — 食べる, 飲む, 寝る, 行く. Bring in one at a time slowly with its romaji and meaning, then have the learner say it back and warmly react to each attempt.",
   },
   {
     id: "ja-unit-1-lesson-3",
@@ -554,7 +620,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Yuki, a friendly Japanese tutor role-playing a café server. Help the learner order with '...をください'. Mind the polite tone, keep the conversation simple, slow, and encouraging.",
+      "You're Yuki, a friendly Japanese tutor playing a kind café server. Stay in this café scene only — コーヒー, お水, and ordering with '...をください'. Offer one phrase at a time slowly with its meaning, listen to their order, keep the polite tone, and gently invite them to try again.",
   },
   {
     id: "ja-unit-1-lesson-4",
@@ -587,7 +653,7 @@ export const lessons: Lesson[] = [
       { id: "ja-u1-l4-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "まっすぐ" },
     ],
     aiTeacherPrompt:
-      "You are Yuki, a Japanese pronunciation coach for an audio lesson. Focus on directions: どこ, 右, 左, まっすぐ. Pronounce each clearly, ask the learner to repeat, and praise good attempts.",
+      "You're Yuki, a calm, encouraging Japanese pronunciation coach. Stay on this directions lesson only — どこ, 右, 左, まっすぐ. Say each slowly with its meaning, listen closely as they repeat, and praise every good attempt while gently shaping the sounds.",
   },
   {
     id: "ja-unit-1-lesson-5",
@@ -620,7 +686,7 @@ export const lessons: Lesson[] = [
       { id: "ja-u1-l5-a2", type: "translate", prompt: 'Translate: "Money"', answer: "お金" },
     ],
     aiTeacherPrompt:
-      "You are Yuki, a gentle Japanese teacher. Drill shopping words: いくら, 買う, お店, お金, and asking 'いくらですか？'. Keep replies short and encouraging.",
+      "You're Yuki, a gentle, encouraging Japanese teacher. Stay on this lesson's shopping words — いくら, 買う, お店, お金, and asking 'いくらですか？'. Introduce one at a time slowly with its meaning, then listen and warmly cheer each try.",
   },
   {
     id: "ja-unit-1-lesson-6",
@@ -653,7 +719,7 @@ export const lessons: Lesson[] = [
       { id: "ja-u1-l6-a2", type: "translate", prompt: 'Translate: "Mother"', answer: "母" },
     ],
     aiTeacherPrompt:
-      "You are Yuki, a friendly Japanese tutor. Help the learner talk about family and friends with 家族, 友達, 母, 父. Role-play a short introduction of family members and keep it simple and slow.",
+      "You're Yuki, a warm Japanese tutor who loves hearing about families. Stay on this lesson — 家族, 友達, 母, 父, and 'これは私の家族です。'. Introduce one word at a time slowly, role-play a tiny family intro, listen, and gently invite them to try again.",
   },
 
   // ============================================================ English · U1
@@ -688,7 +754,7 @@ export const lessons: Lesson[] = [
       { id: "en-u1-l1-a2", type: "translate", prompt: 'Say the morning greeting', answer: "Good morning", hint: "Two words — starts with Good." },
     ],
     aiTeacherPrompt:
-      "You are Emma, a warm and patient English teacher. Drill the greetings Hello, Goodbye, and Good morning. Speak slowly, model the pronunciation, ask the learner to repeat each word, and give gentle encouragement. Keep replies short.",
+      "You're Emma, a warm, friendly English teacher who's genuinely happy to help. Stay on this greetings lesson — Hello, Goodbye, Good morning. Say each one slowly with its meaning, then listen as the learner repeats and cheer their progress with real warmth.",
   },
   {
     id: "en-unit-1-lesson-2",
@@ -719,7 +785,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Emma, a friendly English tutor. Help the learner introduce themselves with 'My name is ...' and ask names with 'What is your name?'. Role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Emma, a friendly English tutor who loves a warm chat. Stay on this lesson — introducing yourself with 'My name is ...', 'Nice to meet you', and asking 'What is your name?'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and have them try it again.",
+  },
+  {
+    id: "en-unit-1-lesson-3",
+    unitId: "en-unit-1",
+    languageId: "en",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "en-v-eat", word: "Eat", translation: "To have food", phonetic: "eet", example: "I eat breakfast." },
+      { id: "en-v-drink", word: "Drink", translation: "To have a liquid", phonetic: "drink" },
+      { id: "en-v-sleep", word: "Sleep", translation: "To rest at night", phonetic: "sleep" },
+      { id: "en-v-go", word: "Go", translation: "To move somewhere", phonetic: "goh" },
+    ],
+    phrases: [
+      { id: "en-p-im-hungry", text: "I am hungry", translation: "Said when you want to eat", phonetic: "I am HUNG-gree" },
+    ],
+    activities: [
+      {
+        id: "en-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'Which word means "to have food"?',
+        options: [
+          { id: "o1", text: "Sleep", correct: false },
+          { id: "o2", text: "Eat", correct: true },
+          { id: "o3", text: "Go", correct: false },
+        ],
+      },
+      { id: "en-u1-l3-a2", type: "translate", prompt: "Say the word for resting at night", answer: "Sleep" },
+    ],
+    aiTeacherPrompt:
+      "You're Emma, a warm, friendly English teacher who makes practice feel easy. Stay on this lesson's everyday verbs — Eat, Drink, Sleep, Go. Say one at a time slowly with its meaning, then have the learner say it back and cheer each try.",
+  },
+  {
+    id: "en-unit-1-lesson-4",
+    unitId: "en-unit-1",
+    languageId: "en",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "en-v-coffee", word: "Coffee", translation: "A hot drink", phonetic: "KAW-fee", example: "A coffee, please." },
+      { id: "en-v-water", word: "Water", translation: "A clear drink", phonetic: "WAH-ter" },
+      { id: "en-v-please", word: "Please", translation: "A polite word when asking", phonetic: "pleez" },
+    ],
+    phrases: [
+      { id: "en-p-coffee-please", text: "A coffee, please.", translation: "A polite way to order coffee", phonetic: "a KAW-fee pleez" },
+    ],
+    activities: [
+      { id: "en-u1-l4-a1", type: "translate", prompt: "Order politely: ask for a coffee", answer: "A coffee, please" },
+      {
+        id: "en-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: "Which word is the polite word when asking?",
+        options: [
+          { id: "o1", text: "Please", correct: true },
+          { id: "o2", text: "Water", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Emma, a friendly English tutor playing a kind café server. Stay in this café scene only — Coffee, Water, Please, and ordering 'A coffee, please.'. Offer one phrase at a time slowly, listen to their order, fix slips kindly, and have them try again.",
+  },
+  {
+    id: "en-unit-1-lesson-5",
+    unitId: "en-unit-1",
+    languageId: "en",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "en-v-where", word: "Where", translation: "Asks about a place", phonetic: "wair" },
+      { id: "en-v-left", word: "Left", translation: "The opposite of right", phonetic: "left" },
+      { id: "en-v-right", word: "Right", translation: "The opposite of left", phonetic: "ryt" },
+      { id: "en-v-straight", word: "Straight ahead", translation: "Directly in front of you", phonetic: "strayt uh-HED" },
+    ],
+    phrases: [
+      { id: "en-p-where-station", text: "Where is the station?", translation: "Asks for the location of the station", phonetic: "wair iz thuh STAY-shun" },
+    ],
+    activities: [
+      {
+        id: "en-u1-l5-a1",
+        type: "listen",
+        prompt: "Listen and choose: which is the opposite of right?",
+        options: [
+          { id: "o1", text: "Left", correct: true },
+          { id: "o2", text: "Right", correct: false },
+        ],
+      },
+      { id: "en-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "Straight ahead" },
+    ],
+    aiTeacherPrompt:
+      "You're Emma, an upbeat English pronunciation coach. Stay on this directions lesson only — Where, Left, Right, Straight ahead, and asking 'Where is the station?'. Say each slowly with its meaning, listen as they repeat, and celebrate every good attempt.",
   },
 
   // ============================================================= German · U1
@@ -755,7 +920,7 @@ export const lessons: Lesson[] = [
       { id: "de-u1-l1-a2", type: "translate", prompt: 'Translate: "Thank you"', answer: "Danke" },
     ],
     aiTeacherPrompt:
-      "You are Lukas, a cheerful German teacher. Drill the greetings Hallo, Tschüss, Guten Morgen, and Danke. Model the sounds slowly, ask the learner to repeat, and offer light encouragement. Keep responses short and clear.",
+      "You're Lukas, a cheerful, energetic German teacher who makes learning feel fun. Stay on this greetings lesson — Hallo, Tschüss, Guten Morgen, Danke. Say each one slowly with its meaning, then listen as they repeat and warmly celebrate each try.",
   },
   {
     id: "de-unit-1-lesson-2",
@@ -786,7 +951,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Lukas, a friendly German tutor. Help the learner introduce themselves with 'Ich heiße ...' and ask names with 'Wie heißt du?'. Role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Lukas, a friendly German tutor with an easy, upbeat manner. Stay on this lesson — introducing yourself with 'Ich heiße ...', 'Freut mich', and asking 'Wie heißt du?'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and invite them to try again.",
+  },
+  {
+    id: "de-unit-1-lesson-3",
+    unitId: "de-unit-1",
+    languageId: "de",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "de-v-essen", word: "Essen", translation: "To eat", phonetic: "EH-sen", example: "Ich möchte essen." },
+      { id: "de-v-trinken", word: "Trinken", translation: "To drink", phonetic: "TRIN-ken" },
+      { id: "de-v-schlafen", word: "Schlafen", translation: "To sleep", phonetic: "SHLAH-fen" },
+      { id: "de-v-gehen", word: "Gehen", translation: "To go", phonetic: "GAY-en" },
+    ],
+    phrases: [
+      { id: "de-p-ich-habe-hunger", text: "Ich habe Hunger", translation: "I am hungry", phonetic: "ikh HAH-buh HOONG-er" },
+    ],
+    activities: [
+      {
+        id: "de-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'What does "Essen" mean?',
+        options: [
+          { id: "o1", text: "To sleep", correct: false },
+          { id: "o2", text: "To eat", correct: true },
+          { id: "o3", text: "To go", correct: false },
+        ],
+      },
+      { id: "de-u1-l3-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "Trinken" },
+    ],
+    aiTeacherPrompt:
+      "You're Lukas, a cheerful German teacher who makes practice feel easy. Stay on this lesson's everyday verbs — Essen, Trinken, Schlafen, Gehen. Bring in one at a time slowly with its English meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "de-unit-1-lesson-4",
+    unitId: "de-unit-1",
+    languageId: "de",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "de-v-kaffee", word: "Kaffee", translation: "Coffee", phonetic: "KAH-fey", example: "Einen Kaffee, bitte." },
+      { id: "de-v-wasser", word: "Wasser", translation: "Water", phonetic: "VAH-ser" },
+      { id: "de-v-ich-moechte", word: "Ich möchte", translation: "I would like", phonetic: "ikh MOOKH-tuh" },
+    ],
+    phrases: [
+      { id: "de-p-einen-kaffee-bitte", text: "Einen Kaffee, bitte.", translation: "A coffee, please.", phonetic: "EYE-nen KAH-fey BIT-tuh" },
+    ],
+    activities: [
+      { id: "de-u1-l4-a1", type: "translate", prompt: 'Order: "A coffee, please"', answer: "Einen Kaffee, bitte" },
+      {
+        id: "de-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: 'What does "Wasser" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Lukas, a friendly German tutor playing a kind café server. Stay in this café scene only — Kaffee, Wasser, Ich möchte, and ordering 'Einen Kaffee, bitte.'. Offer one phrase at a time slowly with its meaning, listen to their order, gently fix it, and invite them to try again.",
+  },
+  {
+    id: "de-unit-1-lesson-5",
+    unitId: "de-unit-1",
+    languageId: "de",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "de-v-wo", word: "Wo", translation: "Where", phonetic: "voh" },
+      { id: "de-v-links", word: "Links", translation: "Left", phonetic: "links" },
+      { id: "de-v-rechts", word: "Rechts", translation: "Right", phonetic: "rekhts" },
+      { id: "de-v-geradeaus", word: "Geradeaus", translation: "Straight ahead", phonetic: "geh-RAH-duh-ows" },
+    ],
+    phrases: [
+      { id: "de-p-wo-ist-der-bahnhof", text: "Wo ist der Bahnhof?", translation: "Where is the station?", phonetic: "voh ist dair BAHN-hohf" },
+    ],
+    activities: [
+      {
+        id: "de-u1-l5-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "Left"?',
+        options: [
+          { id: "o1", text: "Links", correct: true },
+          { id: "o2", text: "Rechts", correct: false },
+        ],
+      },
+      { id: "de-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "Geradeaus" },
+    ],
+    aiTeacherPrompt:
+      "You're Lukas, an upbeat German pronunciation coach. Stay on this directions lesson only — Wo, Links, Rechts, Geradeaus, and asking 'Wo ist der Bahnhof?'. Say each slowly with its meaning, listen closely as they repeat, and celebrate every good attempt while shaping the tricky sounds.",
   },
 
   // ========================================================= Indonesian · U1
@@ -822,7 +1086,7 @@ export const lessons: Lesson[] = [
       { id: "id-u1-l1-a2", type: "translate", prompt: 'Translate: "Good morning"', answer: "Selamat pagi" },
     ],
     aiTeacherPrompt:
-      "You are Dewi, a warm Indonesian teacher. Drill the greetings Halo, Selamat pagi, Terima kasih, and Sampai jumpa. Speak slowly, model the pronunciation, ask the learner to repeat, and encourage them kindly. Keep replies short.",
+      "You're Dewi, a warm, friendly Indonesian teacher who's delighted to teach. Stay on this greetings lesson — Halo, Selamat pagi, Terima kasih, Sampai jumpa. Say each one slowly with its meaning, then listen as they repeat and cheer their progress kindly.",
   },
   {
     id: "id-unit-1-lesson-2",
@@ -853,7 +1117,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Dewi, a friendly Indonesian tutor. Help the learner introduce themselves with 'Nama saya ...' and ask names with 'Siapa nama kamu?'. Role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Dewi, a friendly Indonesian tutor who loves a warm chat. Stay on this lesson — introducing yourself with 'Nama saya ...', 'Senang bertemu', and asking 'Siapa nama kamu?'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and have them try again.",
+  },
+  {
+    id: "id-unit-1-lesson-3",
+    unitId: "id-unit-1",
+    languageId: "id",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "id-v-makan", word: "Makan", translation: "To eat", phonetic: "MAH-kan", example: "Saya mau makan." },
+      { id: "id-v-minum", word: "Minum", translation: "To drink", phonetic: "MEE-noom" },
+      { id: "id-v-tidur", word: "Tidur", translation: "To sleep", phonetic: "TEE-door" },
+      { id: "id-v-pergi", word: "Pergi", translation: "To go", phonetic: "PUHR-gee" },
+    ],
+    phrases: [
+      { id: "id-p-saya-lapar", text: "Saya lapar", translation: "I am hungry", phonetic: "SAH-yah LAH-par" },
+    ],
+    activities: [
+      {
+        id: "id-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'What does "Makan" mean?',
+        options: [
+          { id: "o1", text: "To sleep", correct: false },
+          { id: "o2", text: "To eat", correct: true },
+          { id: "o3", text: "To go", correct: false },
+        ],
+      },
+      { id: "id-u1-l3-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "Minum" },
+    ],
+    aiTeacherPrompt:
+      "You're Dewi, a warm Indonesian teacher who makes practice feel easy. Stay on this lesson's everyday verbs — Makan, Minum, Tidur, Pergi. Bring in one at a time slowly with its English meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "id-unit-1-lesson-4",
+    unitId: "id-unit-1",
+    languageId: "id",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "id-v-kopi", word: "Kopi", translation: "Coffee", phonetic: "KOH-pee", example: "Saya mau kopi." },
+      { id: "id-v-air", word: "Air", translation: "Water", phonetic: "AH-eer" },
+      { id: "id-v-saya-mau", word: "Saya mau", translation: "I want", phonetic: "SAH-yah MAH-oo" },
+    ],
+    phrases: [
+      { id: "id-p-saya-mau-kopi", text: "Saya mau kopi.", translation: "I want a coffee.", phonetic: "SAH-yah MAH-oo KOH-pee" },
+    ],
+    activities: [
+      { id: "id-u1-l4-a1", type: "translate", prompt: 'Order: "I want a coffee"', answer: "Saya mau kopi" },
+      {
+        id: "id-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: 'What does "Air" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Dewi, a friendly Indonesian tutor playing a kind café server. Stay in this café scene only — Kopi, Air, Saya mau, and ordering 'Saya mau kopi.'. Offer one phrase at a time slowly with its meaning, listen to their order, gently fix it, and invite them to try again.",
+  },
+  {
+    id: "id-unit-1-lesson-5",
+    unitId: "id-unit-1",
+    languageId: "id",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "id-v-di-mana", word: "Di mana", translation: "Where", phonetic: "dee MAH-nah" },
+      { id: "id-v-kiri", word: "Kiri", translation: "Left", phonetic: "KEE-ree" },
+      { id: "id-v-kanan", word: "Kanan", translation: "Right", phonetic: "KAH-nan" },
+      { id: "id-v-lurus", word: "Lurus", translation: "Straight ahead", phonetic: "LOO-roos" },
+    ],
+    phrases: [
+      { id: "id-p-di-mana-stasiun", text: "Di mana stasiun?", translation: "Where is the station?", phonetic: "dee MAH-nah stah-SEE-oon" },
+    ],
+    activities: [
+      {
+        id: "id-u1-l5-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "Left"?',
+        options: [
+          { id: "o1", text: "Kiri", correct: true },
+          { id: "o2", text: "Kanan", correct: false },
+        ],
+      },
+      { id: "id-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "Lurus" },
+    ],
+    aiTeacherPrompt:
+      "You're Dewi, an upbeat Indonesian pronunciation coach. Stay on this directions lesson only — Di mana, Kiri, Kanan, Lurus, and asking 'Di mana stasiun?'. Say each slowly with its meaning, listen closely as they repeat, and celebrate every good attempt.",
   },
 
   // ============================================================ Chinese · U1
@@ -896,7 +1259,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Mei, a gentle Mandarin teacher. Teach the greetings 你好, 谢谢, and 再见. Pronounce each syllable with the correct tone, explain the pinyin, ask the learner to repeat, and give calm encouragement. Keep replies very short.",
+      "You're Mei, a gentle, warm Mandarin teacher who makes tones feel approachable. Stay on this greetings lesson — 你好, 谢谢, 再见. Say each slowly with its pinyin, tone, and meaning, then listen as they repeat and offer calm, genuine encouragement.",
   },
   {
     id: "zh-unit-1-lesson-2",
@@ -927,7 +1290,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Mei, a friendly Mandarin tutor. Help the learner introduce themselves with '我叫 ...' and ask names with '你叫什么名字？'. Mind the tones, role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Mei, a friendly Mandarin tutor with a warm, patient touch. Stay on this lesson — introducing yourself with '我叫 ...', '早上好', and asking '你叫什么名字？'. Mind the tones, role-play a tiny introduction, listen to their reply, fix slips kindly, and invite them to try again.",
+  },
+  {
+    id: "zh-unit-1-lesson-3",
+    unitId: "zh-unit-1",
+    languageId: "zh",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "zh-v-chi", word: "吃", translation: "To eat", phonetic: "chr", example: "我想吃饭。" },
+      { id: "zh-v-he", word: "喝", translation: "To drink", phonetic: "huh" },
+      { id: "zh-v-shuijiao", word: "睡觉", translation: "To sleep", phonetic: "shway-jyaow" },
+      { id: "zh-v-qu", word: "去", translation: "To go", phonetic: "chyoo" },
+    ],
+    phrases: [
+      { id: "zh-p-wo-e-le", text: "我饿了", translation: "I'm hungry", phonetic: "waw uh luh" },
+    ],
+    activities: [
+      {
+        id: "zh-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'Which word means "To eat"?',
+        options: [
+          { id: "o1", text: "喝", correct: false },
+          { id: "o2", text: "吃", correct: true },
+          { id: "o3", text: "去", correct: false },
+        ],
+      },
+      { id: "zh-u1-l3-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "喝" },
+    ],
+    aiTeacherPrompt:
+      "You're Mei, a gentle Mandarin teacher who makes practice feel easy. Stay on this lesson's everyday verbs — 吃, 喝, 睡觉, 去. Bring in one at a time slowly with its pinyin, tone, and meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "zh-unit-1-lesson-4",
+    unitId: "zh-unit-1",
+    languageId: "zh",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "zh-v-kafei", word: "咖啡", translation: "Coffee", phonetic: "kah-fey", example: "请给我咖啡。" },
+      { id: "zh-v-shui", word: "水", translation: "Water", phonetic: "shway" },
+      { id: "zh-v-qing-gei-wo", word: "请给我", translation: "Please give me", phonetic: "ching gay waw" },
+    ],
+    phrases: [
+      { id: "zh-p-qing-gei-wo-kafei", text: "请给我咖啡。", translation: "Please give me a coffee.", phonetic: "ching gay waw kah-fey" },
+    ],
+    activities: [
+      { id: "zh-u1-l4-a1", type: "translate", prompt: 'Order: "Please give me a coffee"', answer: "请给我咖啡" },
+      {
+        id: "zh-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: 'What does "水" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Mei, a friendly Mandarin tutor playing a kind café server. Stay in this café scene only — 咖啡, 水, 请给我, and ordering '请给我咖啡。'. Mind the tones, offer one phrase at a time slowly with its meaning, listen to their order, and gently invite them to try again.",
+  },
+  {
+    id: "zh-unit-1-lesson-5",
+    unitId: "zh-unit-1",
+    languageId: "zh",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "zh-v-nali", word: "哪里", translation: "Where", phonetic: "nah-lee" },
+      { id: "zh-v-zuo", word: "左", translation: "Left", phonetic: "dzwaw" },
+      { id: "zh-v-you", word: "右", translation: "Right", phonetic: "yoh" },
+      { id: "zh-v-yizhi-zou", word: "一直走", translation: "Straight ahead", phonetic: "ee-jr dzoh" },
+    ],
+    phrases: [
+      { id: "zh-p-chezhan-zai-nali", text: "车站在哪里？", translation: "Where is the station?", phonetic: "chuh-jan dzai nah-lee" },
+    ],
+    activities: [
+      {
+        id: "zh-u1-l5-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "Left"?',
+        options: [
+          { id: "o1", text: "左", correct: true },
+          { id: "o2", text: "右", correct: false },
+        ],
+      },
+      { id: "zh-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "一直走" },
+    ],
+    aiTeacherPrompt:
+      "You're Mei, a gentle Mandarin pronunciation coach. Stay on this directions lesson only — 哪里, 左, 右, 一直走, and asking '车站在哪里？'. Say each slowly with its pinyin, tone, and meaning, listen closely as they repeat, and celebrate every good attempt.",
   },
 
   // ============================================================ Italian · U1
@@ -963,7 +1425,7 @@ export const lessons: Lesson[] = [
       { id: "it-u1-l1-a2", type: "translate", prompt: 'Translate: "Good morning"', answer: "Buongiorno" },
     ],
     aiTeacherPrompt:
-      "You are Marco, a cheerful Italian teacher. Drill the greetings Ciao, Buongiorno, Grazie, and Arrivederci. Model the melodic sounds slowly, ask the learner to repeat, and offer light encouragement. Keep responses short and clear.",
+      "You're Marco, a cheerful, lively Italian teacher who brings real warmth to every word. Stay on this greetings lesson — Ciao, Buongiorno, Grazie, Arrivederci. Say each one slowly with its meaning, then listen as they repeat and celebrate the melody of their tries.",
   },
   {
     id: "it-unit-1-lesson-2",
@@ -994,7 +1456,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Marco, a friendly Italian tutor. Help the learner introduce themselves with 'Mi chiamo ...' and ask names with 'Come ti chiami?'. Role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Marco, a friendly Italian tutor who loves a warm, lively chat. Stay on this lesson — introducing yourself with 'Mi chiamo ...', 'Piacere', and asking 'Come ti chiami?'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and have them try again.",
+  },
+  {
+    id: "it-unit-1-lesson-3",
+    unitId: "it-unit-1",
+    languageId: "it",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "it-v-mangiare", word: "Mangiare", translation: "To eat", phonetic: "man-JAH-reh", example: "Voglio mangiare." },
+      { id: "it-v-bere", word: "Bere", translation: "To drink", phonetic: "BEH-reh" },
+      { id: "it-v-dormire", word: "Dormire", translation: "To sleep", phonetic: "dor-MEE-reh" },
+      { id: "it-v-andare", word: "Andare", translation: "To go", phonetic: "an-DAH-reh" },
+    ],
+    phrases: [
+      { id: "it-p-ho-fame", text: "Ho fame", translation: "I am hungry", phonetic: "oh FAH-meh" },
+    ],
+    activities: [
+      {
+        id: "it-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'What does "Mangiare" mean?',
+        options: [
+          { id: "o1", text: "To sleep", correct: false },
+          { id: "o2", text: "To eat", correct: true },
+          { id: "o3", text: "To go", correct: false },
+        ],
+      },
+      { id: "it-u1-l3-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "Bere" },
+    ],
+    aiTeacherPrompt:
+      "You're Marco, a cheerful Italian teacher who makes practice feel easy. Stay on this lesson's everyday verbs — Mangiare, Bere, Dormire, Andare. Bring in one at a time slowly with its English meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "it-unit-1-lesson-4",
+    unitId: "it-unit-1",
+    languageId: "it",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "it-v-un-caffe", word: "Un caffè", translation: "A coffee", phonetic: "oon kaf-FEH", example: "Vorrei un caffè." },
+      { id: "it-v-acqua", word: "Acqua", translation: "Water", phonetic: "AH-kwah" },
+      { id: "it-v-vorrei", word: "Vorrei", translation: "I would like", phonetic: "vor-RAY" },
+    ],
+    phrases: [
+      { id: "it-p-vorrei-un-caffe", text: "Vorrei un caffè, per favore.", translation: "I would like a coffee, please.", phonetic: "vor-RAY oon kaf-FEH pehr fah-VOH-reh" },
+    ],
+    activities: [
+      { id: "it-u1-l4-a1", type: "translate", prompt: 'Order: "I would like a coffee"', answer: "Vorrei un caffè" },
+      {
+        id: "it-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: 'What does "Acqua" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Marco, a friendly Italian tutor playing a kind café server. Stay in this café scene only — Un caffè, Acqua, Vorrei, and ordering 'Vorrei un caffè, per favore.'. Offer one phrase at a time slowly with its meaning, listen to their order, gently fix it, and invite them to try again.",
+  },
+  {
+    id: "it-unit-1-lesson-5",
+    unitId: "it-unit-1",
+    languageId: "it",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "it-v-dove", word: "Dove", translation: "Where", phonetic: "DOH-veh" },
+      { id: "it-v-a-sinistra", word: "A sinistra", translation: "To the left", phonetic: "ah see-NEE-strah" },
+      { id: "it-v-a-destra", word: "A destra", translation: "To the right", phonetic: "ah DEH-strah" },
+      { id: "it-v-sempre-dritto", word: "Sempre dritto", translation: "Straight ahead", phonetic: "SEM-preh DREET-toh" },
+    ],
+    phrases: [
+      { id: "it-p-dove-la-stazione", text: "Dov'è la stazione?", translation: "Where is the station?", phonetic: "doh-VEH lah stah-TSYOH-neh" },
+    ],
+    activities: [
+      {
+        id: "it-u1-l5-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "To the left"?',
+        options: [
+          { id: "o1", text: "A sinistra", correct: true },
+          { id: "o2", text: "A destra", correct: false },
+        ],
+      },
+      { id: "it-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "Sempre dritto" },
+    ],
+    aiTeacherPrompt:
+      "You're Marco, an upbeat Italian pronunciation coach. Stay on this directions lesson only — Dove, A sinistra, A destra, Sempre dritto, and asking 'Dov'è la stazione?'. Say each slowly with its meaning, listen closely as they repeat, and celebrate every good attempt.",
   },
 
   // ========================================================= Portuguese · U1
@@ -1030,7 +1591,7 @@ export const lessons: Lesson[] = [
       { id: "pt-u1-l1-a2", type: "translate", prompt: 'Translate: "Good morning"', answer: "Bom dia" },
     ],
     aiTeacherPrompt:
-      "You are Rafael, a warm Brazilian Portuguese teacher. Drill the greetings Olá, Bom dia, Obrigado, and Tchau. Speak slowly, model the pronunciation, ask the learner to repeat, and encourage them kindly. Keep replies short.",
+      "You're Rafael, a warm, sunny Brazilian Portuguese teacher who makes learners feel welcome. Stay on this greetings lesson — Olá, Bom dia, Obrigado, Tchau. Say each one slowly with its meaning, then listen as they repeat and cheer their progress kindly.",
   },
   {
     id: "pt-unit-1-lesson-2",
@@ -1061,7 +1622,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Rafael, a friendly Brazilian Portuguese tutor. Help the learner introduce themselves with 'Meu nome é ...' and ask names with 'Qual é o seu nome?'. Role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Rafael, a friendly Brazilian Portuguese tutor with a warm, easy vibe. Stay on this lesson — introducing yourself with 'Meu nome é ...', 'Prazer', and asking 'Qual é o seu nome?'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and invite them to try again.",
+  },
+  {
+    id: "pt-unit-1-lesson-3",
+    unitId: "pt-unit-1",
+    languageId: "pt",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "pt-v-comer", word: "Comer", translation: "To eat", phonetic: "koh-MEHR", example: "Quero comer." },
+      { id: "pt-v-beber", word: "Beber", translation: "To drink", phonetic: "beh-BEHR" },
+      { id: "pt-v-dormir", word: "Dormir", translation: "To sleep", phonetic: "dor-MEER" },
+      { id: "pt-v-ir", word: "Ir", translation: "To go", phonetic: "eer" },
+    ],
+    phrases: [
+      { id: "pt-p-estou-com-fome", text: "Estou com fome", translation: "I am hungry", phonetic: "es-TOH kong FOH-mee" },
+    ],
+    activities: [
+      {
+        id: "pt-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'What does "Comer" mean?',
+        options: [
+          { id: "o1", text: "To sleep", correct: false },
+          { id: "o2", text: "To eat", correct: true },
+          { id: "o3", text: "To go", correct: false },
+        ],
+      },
+      { id: "pt-u1-l3-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "Beber" },
+    ],
+    aiTeacherPrompt:
+      "You're Rafael, a warm Brazilian Portuguese teacher who makes practice feel easy. Stay on this lesson's everyday verbs — Comer, Beber, Dormir, Ir. Bring in one at a time slowly with its English meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "pt-unit-1-lesson-4",
+    unitId: "pt-unit-1",
+    languageId: "pt",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "pt-v-um-cafe", word: "Um café", translation: "A coffee", phonetic: "oong kah-FEH", example: "Um café, por favor." },
+      { id: "pt-v-agua", word: "Água", translation: "Water", phonetic: "AH-gwah" },
+      { id: "pt-v-eu-quero", word: "Eu quero", translation: "I want", phonetic: "eh-oo KEH-roo" },
+    ],
+    phrases: [
+      { id: "pt-p-um-cafe-por-favor", text: "Um café, por favor.", translation: "A coffee, please.", phonetic: "oong kah-FEH por fah-VOR" },
+    ],
+    activities: [
+      { id: "pt-u1-l4-a1", type: "translate", prompt: 'Order: "A coffee, please"', answer: "Um café, por favor" },
+      {
+        id: "pt-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: 'What does "Água" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Rafael, a friendly Brazilian Portuguese tutor playing a kind café server. Stay in this café scene only — Um café, Água, Eu quero, and ordering 'Um café, por favor.'. Offer one phrase at a time slowly with its meaning, listen to their order, gently fix it, and invite them to try again.",
+  },
+  {
+    id: "pt-unit-1-lesson-5",
+    unitId: "pt-unit-1",
+    languageId: "pt",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "pt-v-onde", word: "Onde", translation: "Where", phonetic: "OHN-jee" },
+      { id: "pt-v-a-esquerda", word: "À esquerda", translation: "To the left", phonetic: "ah es-KEHR-dah" },
+      { id: "pt-v-a-direita", word: "À direita", translation: "To the right", phonetic: "ah jee-RAY-tah" },
+      { id: "pt-v-em-frente", word: "Em frente", translation: "Straight ahead", phonetic: "eng FREN-chee" },
+    ],
+    phrases: [
+      { id: "pt-p-onde-fica-a-estacao", text: "Onde fica a estação?", translation: "Where is the station?", phonetic: "OHN-jee FEE-kah ah es-tah-SOWNG" },
+    ],
+    activities: [
+      {
+        id: "pt-u1-l5-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "To the left"?',
+        options: [
+          { id: "o1", text: "À esquerda", correct: true },
+          { id: "o2", text: "À direita", correct: false },
+        ],
+      },
+      { id: "pt-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "Em frente" },
+    ],
+    aiTeacherPrompt:
+      "You're Rafael, an upbeat Brazilian Portuguese pronunciation coach. Stay on this directions lesson only — Onde, À esquerda, À direita, Em frente, and asking 'Onde fica a estação?'. Say each slowly with its meaning, listen closely as they repeat, and celebrate every good attempt.",
   },
 
   // ============================================================= Korean · U1
@@ -1104,7 +1764,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Jisoo, a gentle Korean teacher. Teach the greetings 안녕하세요, 감사합니다, and 안녕히 가세요. Pronounce each syllable clearly, explain the romanization, ask the learner to repeat, and give calm encouragement. Keep replies very short.",
+      "You're Jisoo, a gentle, warm Korean teacher who puts beginners at ease. Stay on this greetings lesson — 안녕하세요, 감사합니다, 안녕히 가세요. Say each slowly with its romanization and meaning, then listen as they repeat and offer calm, genuine encouragement.",
   },
   {
     id: "ko-unit-1-lesson-2",
@@ -1135,7 +1795,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Jisoo, a friendly Korean tutor. Help the learner introduce themselves with '제 이름은 ...입니다' and ask names with '이름이 뭐예요?'. Role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Jisoo, a friendly Korean tutor with a warm, patient touch. Stay on this lesson — introducing yourself with '제 이름은 ...입니다', '반갑습니다', and asking '이름이 뭐예요?'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and have them try again.",
+  },
+  {
+    id: "ko-unit-1-lesson-3",
+    unitId: "ko-unit-1",
+    languageId: "ko",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "ko-v-meokda", word: "먹다", translation: "To eat", phonetic: "muhk-dah", example: "밥을 먹다." },
+      { id: "ko-v-masida", word: "마시다", translation: "To drink", phonetic: "mah-shee-dah" },
+      { id: "ko-v-jada", word: "자다", translation: "To sleep", phonetic: "jah-dah" },
+      { id: "ko-v-gada", word: "가다", translation: "To go", phonetic: "gah-dah" },
+    ],
+    phrases: [
+      { id: "ko-p-baegopayo", text: "배고파요", translation: "I'm hungry", phonetic: "bae-go-PAH-yo" },
+    ],
+    activities: [
+      {
+        id: "ko-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'Which word means "To eat"?',
+        options: [
+          { id: "o1", text: "마시다", correct: false },
+          { id: "o2", text: "먹다", correct: true },
+          { id: "o3", text: "가다", correct: false },
+        ],
+      },
+      { id: "ko-u1-l3-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "마시다" },
+    ],
+    aiTeacherPrompt:
+      "You're Jisoo, a gentle Korean teacher who makes practice feel easy. Stay on this lesson's everyday verbs — 먹다, 마시다, 자다, 가다. Bring in one at a time slowly with its romanization and meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "ko-unit-1-lesson-4",
+    unitId: "ko-unit-1",
+    languageId: "ko",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "ko-v-keopi", word: "커피", translation: "Coffee", phonetic: "kuh-pee", example: "커피 주세요." },
+      { id: "ko-v-mul", word: "물", translation: "Water", phonetic: "mool" },
+      { id: "ko-v-juseyo", word: "주세요", translation: "Please (give me)", phonetic: "joo-se-yo" },
+    ],
+    phrases: [
+      { id: "ko-p-keopi-juseyo", text: "커피 주세요.", translation: "Coffee, please.", phonetic: "kuh-pee joo-se-yo" },
+    ],
+    activities: [
+      { id: "ko-u1-l4-a1", type: "translate", prompt: 'Order: "Coffee, please"', answer: "커피 주세요" },
+      {
+        id: "ko-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: 'What does "물" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Jisoo, a friendly Korean tutor playing a kind café server. Stay in this café scene only — 커피, 물, 주세요, and ordering '커피 주세요.'. Offer one phrase at a time slowly with its meaning, keep the polite tone, listen to their order, and gently invite them to try again.",
+  },
+  {
+    id: "ko-unit-1-lesson-5",
+    unitId: "ko-unit-1",
+    languageId: "ko",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "ko-v-eodi", word: "어디", translation: "Where", phonetic: "uh-dee" },
+      { id: "ko-v-oenjjok", word: "왼쪽", translation: "Left", phonetic: "wen-jjok" },
+      { id: "ko-v-oreunjjok", word: "오른쪽", translation: "Right", phonetic: "oh-reun-jjok" },
+      { id: "ko-v-jikjin", word: "직진", translation: "Straight ahead", phonetic: "jik-jin" },
+    ],
+    phrases: [
+      { id: "ko-p-yeogi-eodiyeyo", text: "역이 어디예요?", translation: "Where is the station?", phonetic: "yuh-gee uh-dee-ye-yo" },
+    ],
+    activities: [
+      {
+        id: "ko-u1-l5-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "Left"?',
+        options: [
+          { id: "o1", text: "왼쪽", correct: true },
+          { id: "o2", text: "오른쪽", correct: false },
+        ],
+      },
+      { id: "ko-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "직진" },
+    ],
+    aiTeacherPrompt:
+      "You're Jisoo, a calm Korean pronunciation coach. Stay on this directions lesson only — 어디, 왼쪽, 오른쪽, 직진, and asking '역이 어디예요?'. Say each slowly with its romanization and meaning, listen closely as they repeat, and celebrate every good attempt.",
   },
 
   // ============================================================ Russian · U1
@@ -1178,7 +1937,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Anna, a gentle Russian teacher. Teach the greetings Привет, Спасибо, and До свидания. Pronounce each syllable clearly, explain the romanization, ask the learner to repeat, and give calm encouragement. Keep replies very short.",
+      "You're Anna, a gentle, warm Russian teacher who makes hard sounds feel doable. Stay on this greetings lesson — Привет, Спасибо, До свидания. Say each slowly with its romanization and meaning, then listen as they repeat and offer calm, genuine encouragement.",
   },
   {
     id: "ru-unit-1-lesson-2",
@@ -1209,7 +1968,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Anna, a friendly Russian tutor. Help the learner introduce themselves with 'Меня зовут ...' and ask names with 'Как тебя зовут?'. Role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Anna, a friendly Russian tutor with a warm, patient manner. Stay on this lesson — introducing yourself with 'Меня зовут ...', 'Очень приятно', and asking 'Как тебя зовут?'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and invite them to try again.",
+  },
+  {
+    id: "ru-unit-1-lesson-3",
+    unitId: "ru-unit-1",
+    languageId: "ru",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "ru-v-est", word: "есть", translation: "To eat", phonetic: "yest", example: "Я хочу есть." },
+      { id: "ru-v-pit", word: "пить", translation: "To drink", phonetic: "peet" },
+      { id: "ru-v-spat", word: "спать", translation: "To sleep", phonetic: "spat" },
+      { id: "ru-v-idti", word: "идти", translation: "To go", phonetic: "eed-TEE" },
+    ],
+    phrases: [
+      { id: "ru-p-ya-goloden", text: "Я голоден", translation: "I am hungry", phonetic: "ya GOH-lah-den" },
+    ],
+    activities: [
+      {
+        id: "ru-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'Which word means "To eat"?',
+        options: [
+          { id: "o1", text: "пить", correct: false },
+          { id: "o2", text: "есть", correct: true },
+          { id: "o3", text: "идти", correct: false },
+        ],
+      },
+      { id: "ru-u1-l3-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "пить" },
+    ],
+    aiTeacherPrompt:
+      "You're Anna, a gentle Russian teacher who makes practice feel easy. Stay on this lesson's everyday verbs — есть, пить, спать, идти. Bring in one at a time slowly with its romanization and meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "ru-unit-1-lesson-4",
+    unitId: "ru-unit-1",
+    languageId: "ru",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "ru-v-kofe", word: "кофе", translation: "Coffee", phonetic: "KOH-feh", example: "Кофе, пожалуйста." },
+      { id: "ru-v-voda", word: "вода", translation: "Water", phonetic: "vah-DAH" },
+      { id: "ru-v-ya-hochu", word: "Я хочу", translation: "I want", phonetic: "ya khah-CHOO" },
+    ],
+    phrases: [
+      { id: "ru-p-kofe-pozhaluysta", text: "Кофе, пожалуйста.", translation: "Coffee, please.", phonetic: "KOH-feh pah-ZHAH-loo-stah" },
+    ],
+    activities: [
+      { id: "ru-u1-l4-a1", type: "translate", prompt: 'Order: "Coffee, please"', answer: "Кофе, пожалуйста" },
+      {
+        id: "ru-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: 'What does "вода" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Anna, a friendly Russian tutor playing a kind café server. Stay in this café scene only — кофе, вода, Я хочу, and ordering 'Кофе, пожалуйста.'. Offer one phrase at a time slowly with its meaning, listen to their order, gently fix it, and invite them to try again.",
+  },
+  {
+    id: "ru-unit-1-lesson-5",
+    unitId: "ru-unit-1",
+    languageId: "ru",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "ru-v-gde", word: "где", translation: "Where", phonetic: "gdyeh" },
+      { id: "ru-v-nalevo", word: "налево", translation: "To the left", phonetic: "nah-LYEH-vah" },
+      { id: "ru-v-napravo", word: "направо", translation: "To the right", phonetic: "nah-PRAH-vah" },
+      { id: "ru-v-pryamo", word: "прямо", translation: "Straight ahead", phonetic: "PRYAH-mah" },
+    ],
+    phrases: [
+      { id: "ru-p-gde-vokzal", text: "Где вокзал?", translation: "Where is the station?", phonetic: "gdyeh vahk-ZAHL" },
+    ],
+    activities: [
+      {
+        id: "ru-u1-l5-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "To the left"?',
+        options: [
+          { id: "o1", text: "налево", correct: true },
+          { id: "o2", text: "направо", correct: false },
+        ],
+      },
+      { id: "ru-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "прямо" },
+    ],
+    aiTeacherPrompt:
+      "You're Anna, a calm Russian pronunciation coach. Stay on this directions lesson only — где, налево, направо, прямо, and asking 'Где вокзал?'. Say each slowly with its romanization and meaning, listen closely as they repeat, and celebrate every good attempt.",
   },
 
   // ============================================================= Arabic · U1
@@ -1252,7 +2110,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Layla, a gentle Arabic teacher. Teach the greetings مرحبا, شكرا, and مع السلامة. Pronounce each syllable clearly, explain the romanization, ask the learner to repeat, and give calm encouragement. Keep replies very short.",
+      "You're Layla, a gentle, warm Arabic teacher who makes new sounds feel friendly. Stay on this greetings lesson — مرحبا, شكرا, مع السلامة. Say each slowly with its romanization and meaning, then listen as they repeat and offer calm, genuine encouragement.",
   },
   {
     id: "ar-unit-1-lesson-2",
@@ -1283,7 +2141,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Layla, a friendly Arabic tutor. Help the learner introduce themselves with 'اسمي ...' and ask names with 'ما اسمك؟'. Role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Layla, a friendly Arabic tutor with a warm, patient touch. Stay on this lesson — introducing yourself with 'اسمي ...', 'صباح الخير', and asking 'ما اسمك؟'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and have them try again.",
+  },
+  {
+    id: "ar-unit-1-lesson-3",
+    unitId: "ar-unit-1",
+    languageId: "ar",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "ar-v-yakul", word: "يأكل", translation: "To eat", phonetic: "YAH-kul", example: "أريد أن آكل." },
+      { id: "ar-v-yashrab", word: "يشرب", translation: "To drink", phonetic: "YASH-rab" },
+      { id: "ar-v-yanam", word: "ينام", translation: "To sleep", phonetic: "ya-NAAM" },
+      { id: "ar-v-yadhhab", word: "يذهب", translation: "To go", phonetic: "YADH-hab" },
+    ],
+    phrases: [
+      { id: "ar-p-ana-jaie", text: "أنا جائع", translation: "I am hungry", phonetic: "ana JAA-i" },
+    ],
+    activities: [
+      {
+        id: "ar-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'Which word means "To eat"?',
+        options: [
+          { id: "o1", text: "يشرب", correct: false },
+          { id: "o2", text: "يأكل", correct: true },
+          { id: "o3", text: "يذهب", correct: false },
+        ],
+      },
+      { id: "ar-u1-l3-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "يشرب" },
+    ],
+    aiTeacherPrompt:
+      "You're Layla, a gentle Arabic teacher who makes practice feel easy. Stay on this lesson's everyday verbs — يأكل, يشرب, ينام, يذهب. Bring in one at a time slowly with its romanization and meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "ar-unit-1-lesson-4",
+    unitId: "ar-unit-1",
+    languageId: "ar",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "ar-v-qahwa", word: "قهوة", translation: "Coffee", phonetic: "QAH-wa", example: "قهوة من فضلك." },
+      { id: "ar-v-maa", word: "ماء", translation: "Water", phonetic: "maa" },
+      { id: "ar-v-min-fadlik", word: "من فضلك", translation: "Please", phonetic: "min FAD-lik" },
+    ],
+    phrases: [
+      { id: "ar-p-qahwa-min-fadlik", text: "قهوة من فضلك.", translation: "Coffee, please.", phonetic: "QAH-wa min FAD-lik" },
+    ],
+    activities: [
+      { id: "ar-u1-l4-a1", type: "translate", prompt: 'Order: "Coffee, please"', answer: "قهوة من فضلك" },
+      {
+        id: "ar-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: 'What does "ماء" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Layla, a friendly Arabic tutor playing a kind café server. Stay in this café scene only — قهوة, ماء, من فضلك, and ordering 'قهوة من فضلك.'. Offer one phrase at a time slowly with its meaning, listen to their order, gently fix it, and invite them to try again.",
+  },
+  {
+    id: "ar-unit-1-lesson-5",
+    unitId: "ar-unit-1",
+    languageId: "ar",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "ar-v-ayna", word: "أين", translation: "Where", phonetic: "AY-na" },
+      { id: "ar-v-yasar", word: "يسار", translation: "Left", phonetic: "ya-SAAR" },
+      { id: "ar-v-yamin", word: "يمين", translation: "Right", phonetic: "ya-MEEN" },
+      { id: "ar-v-ala-tul", word: "على طول", translation: "Straight ahead", phonetic: "a-la TOOL" },
+    ],
+    phrases: [
+      { id: "ar-p-ayna-almahatta", text: "أين المحطة؟", translation: "Where is the station?", phonetic: "AY-na al-ma-HAT-ta" },
+    ],
+    activities: [
+      {
+        id: "ar-u1-l5-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "Left"?',
+        options: [
+          { id: "o1", text: "يسار", correct: true },
+          { id: "o2", text: "يمين", correct: false },
+        ],
+      },
+      { id: "ar-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "على طول" },
+    ],
+    aiTeacherPrompt:
+      "You're Layla, a calm Arabic pronunciation coach. Stay on this directions lesson only — أين, يسار, يمين, على طول, and asking 'أين المحطة؟'. Say each slowly with its romanization and meaning, listen closely as they repeat, and celebrate every good attempt.",
   },
 
   // ============================================================== Hindi · U1
@@ -1326,7 +2283,7 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Priya, a gentle Hindi teacher. Teach the greetings नमस्ते, धन्यवाद, and अलविदा. Pronounce each syllable clearly, explain the romanization, ask the learner to repeat, and give calm encouragement. Keep replies very short.",
+      "You're Priya, a gentle, warm Hindi teacher who makes beginners feel encouraged. Stay on this greetings lesson — नमस्ते, धन्यवाद, अलविदा. Say each slowly with its romanization and meaning, then listen as they repeat and offer calm, genuine encouragement.",
   },
   {
     id: "hi-unit-1-lesson-2",
@@ -1357,7 +2314,106 @@ export const lessons: Lesson[] = [
       },
     ],
     aiTeacherPrompt:
-      "You are Priya, a friendly Hindi tutor. Help the learner introduce themselves with 'मेरा नाम ... है' and ask names with 'आपका नाम क्या है?'. Role-play a short introduction, correct mistakes kindly, and keep it simple and slow.",
+      "You're Priya, a friendly Hindi tutor with a warm, patient manner. Stay on this lesson — introducing yourself with 'मेरा नाम ... है', 'सुप्रभात', and asking 'आपका नाम क्या है?'. Role-play a tiny introduction, listen to their reply, fix slips kindly, and invite them to try again.",
+  },
+  {
+    id: "hi-unit-1-lesson-3",
+    unitId: "hi-unit-1",
+    languageId: "hi",
+    title: "Daily Life",
+    type: "vocabulary",
+    order: 3,
+    xpReward: 15,
+    goals: ["Talk about everyday actions", "Use common verbs"],
+    vocabulary: [
+      { id: "hi-v-khana", word: "खाना", translation: "To eat", phonetic: "KHAH-naa", example: "मुझे खाना है।" },
+      { id: "hi-v-peena", word: "पीना", translation: "To drink", phonetic: "PEE-naa" },
+      { id: "hi-v-sona", word: "सोना", translation: "To sleep", phonetic: "SOH-naa" },
+      { id: "hi-v-jana", word: "जाना", translation: "To go", phonetic: "JAH-naa" },
+    ],
+    phrases: [
+      { id: "hi-p-mujhe-bhookh-lagi-hai", text: "मुझे भूख लगी है", translation: "I am hungry", phonetic: "MOO-jhe bhook lah-GEE hai" },
+    ],
+    activities: [
+      {
+        id: "hi-u1-l3-a1",
+        type: "multipleChoice",
+        prompt: 'Which word means "To eat"?',
+        options: [
+          { id: "o1", text: "पीना", correct: false },
+          { id: "o2", text: "खाना", correct: true },
+          { id: "o3", text: "जाना", correct: false },
+        ],
+      },
+      { id: "hi-u1-l3-a2", type: "translate", prompt: 'Translate: "To drink"', answer: "पीना" },
+    ],
+    aiTeacherPrompt:
+      "You're Priya, a gentle Hindi teacher who makes practice feel easy. Stay on this lesson's everyday verbs — खाना, पीना, सोना, जाना. Bring in one at a time slowly with its romanization and meaning, then have the learner say it back and warmly cheer each try.",
+  },
+  {
+    id: "hi-unit-1-lesson-4",
+    unitId: "hi-unit-1",
+    languageId: "hi",
+    title: "At the Café",
+    type: "chat",
+    order: 4,
+    xpReward: 15,
+    goals: ["Order a drink", "Ask for things politely"],
+    vocabulary: [
+      { id: "hi-v-coffee", word: "कॉफ़ी", translation: "Coffee", phonetic: "KAW-fee", example: "मुझे कॉफ़ी चाहिए।" },
+      { id: "hi-v-paani", word: "पानी", translation: "Water", phonetic: "PAH-nee" },
+      { id: "hi-v-chahiye", word: "चाहिए", translation: "I want / I need", phonetic: "CHAH-hi-ye" },
+    ],
+    phrases: [
+      { id: "hi-p-mujhe-coffee-chahiye", text: "मुझे कॉफ़ी चाहिए।", translation: "I would like a coffee.", phonetic: "MOO-jhe KAW-fee CHAH-hi-ye" },
+    ],
+    activities: [
+      { id: "hi-u1-l4-a1", type: "translate", prompt: 'Order: "I would like a coffee"', answer: "मुझे कॉफ़ी चाहिए" },
+      {
+        id: "hi-u1-l4-a2",
+        type: "multipleChoice",
+        prompt: 'What does "पानी" mean?',
+        options: [
+          { id: "o1", text: "Water", correct: true },
+          { id: "o2", text: "Coffee", correct: false },
+        ],
+      },
+    ],
+    aiTeacherPrompt:
+      "You're Priya, a friendly Hindi tutor playing a kind café server. Stay in this café scene only — कॉफ़ी, पानी, चाहिए, and ordering 'मुझे कॉफ़ी चाहिए।'. Offer one phrase at a time slowly with its meaning, listen to their order, gently fix it, and invite them to try again.",
+  },
+  {
+    id: "hi-unit-1-lesson-5",
+    unitId: "hi-unit-1",
+    languageId: "hi",
+    title: "Travel & Directions",
+    type: "audio",
+    order: 5,
+    xpReward: 15,
+    goals: ["Ask where something is", "Understand basic directions"],
+    vocabulary: [
+      { id: "hi-v-kahan", word: "कहाँ", translation: "Where", phonetic: "kah-HAAN" },
+      { id: "hi-v-baayen", word: "बाएँ", translation: "Left", phonetic: "BAH-en" },
+      { id: "hi-v-daayen", word: "दाएँ", translation: "Right", phonetic: "DAH-en" },
+      { id: "hi-v-seedhe", word: "सीधे", translation: "Straight ahead", phonetic: "SEE-dhe" },
+    ],
+    phrases: [
+      { id: "hi-p-station-kahan-hai", text: "स्टेशन कहाँ है?", translation: "Where is the station?", phonetic: "STAY-shun kah-HAAN hai" },
+    ],
+    activities: [
+      {
+        id: "hi-u1-l5-a1",
+        type: "listen",
+        prompt: 'Listen and choose: which means "Left"?',
+        options: [
+          { id: "o1", text: "बाएँ", correct: true },
+          { id: "o2", text: "दाएँ", correct: false },
+        ],
+      },
+      { id: "hi-u1-l5-a2", type: "speak", prompt: 'Say "Straight ahead" out loud', answer: "सीधे" },
+    ],
+    aiTeacherPrompt:
+      "You're Priya, a calm Hindi pronunciation coach. Stay on this directions lesson only — कहाँ, बाएँ, दाएँ, सीधे, and asking 'स्टेशन कहाँ है?'. Say each slowly with its romanization and meaning, listen closely as they repeat, and celebrate every good attempt.",
   },
 ];
 

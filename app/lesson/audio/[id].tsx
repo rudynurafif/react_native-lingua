@@ -1,4 +1,3 @@
-import { useUser } from "@clerk/expo";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   CallingState,
@@ -7,7 +6,7 @@ import {
   useCallStateHooks,
 } from "@stream-io/video-react-native-sdk";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Platform,
@@ -30,6 +29,7 @@ import {
   type AgentStatus,
   type LessonCallStatus,
 } from "@/hooks/useLessonCall";
+import { useLiveCaptions, type LiveCaption } from "@/hooks/useLiveCaptions";
 import { colors } from "@/theme";
 import type { Language, Lesson, Phrase } from "@/types/learning";
 
@@ -50,12 +50,9 @@ export default function AudioLessonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { user } = useUser();
 
   const lesson = getLesson(id);
 
-  // Subtitles stay a local UI toggle; the rest of the call is driven by Stream.
-  const [subtitlesOn, setSubtitlesOn] = useState(true);
   const [activePhrase, setActivePhrase] = useState(0);
 
   const goBack = () => {
@@ -64,10 +61,12 @@ export default function AudioLessonScreen() {
   };
 
   // The teacher's name is the first word of the persona prompt
-  // ("You are Maria, a warm ...") — handy for the call header + bubble.
+  // ("You're Maria, a warm ..." or "You are Maria, ...") — handy for the header.
   const teacherName = useMemo(() => {
     if (!lesson) return "AI Teacher";
-    return lesson.aiTeacherPrompt.match(/You are (\w+)/)?.[1] ?? "AI Teacher";
+    return (
+      lesson.aiTeacherPrompt.match(/You(?:'re| are) (\w+)/)?.[1] ?? "AI Teacher"
+    );
   }, [lesson]);
 
   if (!lesson) {
@@ -91,9 +90,6 @@ export default function AudioLessonScreen() {
     <LoadedAudioLesson
       lesson={lesson}
       teacherName={teacherName}
-      userName={user?.firstName ?? user?.fullName ?? user?.username ?? "You"}
-      subtitlesOn={subtitlesOn}
-      onToggleSubtitles={() => setSubtitlesOn((s) => !s)}
       activePhrase={activePhrase}
       onSelectPhrase={setActivePhrase}
       onBack={goBack}
@@ -109,9 +105,6 @@ export default function AudioLessonScreen() {
 type LoadedProps = {
   lesson: Lesson;
   teacherName: string;
-  userName: string;
-  subtitlesOn: boolean;
-  onToggleSubtitles: () => void;
   activePhrase: number;
   onSelectPhrase: (index: number) => void;
   onBack: () => void;
@@ -121,9 +114,6 @@ type LoadedProps = {
 function LoadedAudioLesson({
   lesson,
   teacherName,
-  userName,
-  subtitlesOn,
-  onToggleSubtitles,
   activePhrase,
   onSelectPhrase,
   onBack,
@@ -135,6 +125,15 @@ function LoadedAudioLesson({
   const phrase = lesson.phrases[activePhrase] ?? lesson.phrases[0];
 
   const header = HEADER_STATUS[status];
+  const callActive = status === "active";
+
+  // The persona prompt is written FOR the agent ("You're Maria, ..."). For the
+  // on-screen blurb, flip the opening to first person so the teacher introduces
+  // themselves to the learner ("I'm Maria, ...").
+  const teacherIntro = lesson.aiTeacherPrompt.replace(
+    /^You(?:'re| are)\b/,
+    "I'm",
+  );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }} edges={["top"]}>
@@ -166,13 +165,30 @@ function LoadedAudioLesson({
           </View>
         </View>
 
-        {/* Language flag — shows which language this session teaches. */}
-        {language && (
+        {/* Top-right slot: End Call while live, otherwise the language flag. */}
+        {callActive ? (
+          <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={end}
+            className="h-10 w-10 items-center justify-center rounded-full"
+            style={{ backgroundColor: colors.error }}
+            accessibilityRole="button"
+            accessibilityLabel="End call"
+          >
+            <MaterialCommunityIcons
+              name="phone-hangup"
+              size={20}
+              color="#ffffff"
+            />
+          </TouchableOpacity>
+        ) : language ? (
           <LoadingImage
             uri={getFlagUrl(language, 160)}
             className="h-10 w-10 rounded-full"
             contentFit="cover"
           />
+        ) : (
+          <View className="h-10 w-10" />
         )}
       </View>
 
@@ -181,7 +197,8 @@ function LoadedAudioLesson({
         contentContainerStyle={{
           paddingHorizontal: 20,
           paddingTop: 4,
-          paddingBottom: 32,
+          // Pad past the system navigation bar since this screen has no tab bar.
+          paddingBottom: 32 + insetBottom,
         }}
         showsVerticalScrollIndicator={false}
       >
@@ -195,22 +212,15 @@ function LoadedAudioLesson({
               lesson={lesson}
               language={language}
               phrase={phrase}
-              userName={userName}
               agentStatus={agentStatus}
-              subtitlesOn={subtitlesOn}
-              onToggleSubtitles={onToggleSubtitles}
-              onEndCall={end}
             />
           </StreamCall>
         ) : (
           <SetupCallCard
             lesson={lesson}
             phrase={phrase}
-            userName={userName}
             status={status}
             error={error}
-            subtitlesOn={subtitlesOn}
-            onToggleSubtitles={onToggleSubtitles}
             onStart={start}
           />
         )}
@@ -291,16 +301,11 @@ function LoadedAudioLesson({
           <View className="ml-3 flex-1">
             <Text className="text-h4 text-ink">{teacherName}</Text>
             <Text className="text-body-sm mt-1 text-ink-muted">
-              {lesson.aiTeacherPrompt}
+              {teacherIntro}
             </Text>
           </View>
         </View>
       </ScrollView>
-
-      {/* ------------------------------------------------------------------
-          Static bottom tab navigation (mirrors components/TabBar).
-      ------------------------------------------------------------------ */}
-      <BottomNav insetBottom={insetBottom} />
     </SafeAreaView>
   );
 }
@@ -313,29 +318,23 @@ type LiveCallCardProps = {
   lesson: Lesson;
   language?: Language;
   phrase?: Phrase;
-  userName: string;
   agentStatus: AgentStatus;
-  subtitlesOn: boolean;
-  onToggleSubtitles: () => void;
-  onEndCall: () => void;
 };
 
 function LiveCallCard({
   lesson,
   phrase,
-  userName,
   agentStatus,
-  subtitlesOn,
-  onToggleSubtitles,
-  onEndCall,
 }: LiveCallCardProps) {
-  const { useCallCallingState, useMicrophoneState, useLocalParticipant } =
-    useCallStateHooks();
+  const { useCallCallingState, useMicrophoneState } = useCallStateHooks();
   const callingState = useCallCallingState();
   const { status: micStatus, isSpeakingWhileMuted } = useMicrophoneState();
-  const localParticipant = useLocalParticipant();
 
   const call = useCall();
+
+  // Live subtitles for both the learner and the AI teacher, streamed from the
+  // Vision Agent as custom call events.
+  const captions = useLiveCaptions();
 
   const muted = micStatus !== "enabled";
   const joined = callingState === CallingState.JOINED;
@@ -346,25 +345,23 @@ function LiveCallCard({
   const banner = reconnecting
     ? { text: "Reconnecting…", tone: "warning" as const }
     : isSpeakingWhileMuted
-      ? { text: "You're muted — tap the mic to speak", tone: "info" as const }
+      ? { text: "Hold the mic button to talk", tone: "info" as const }
       : null;
 
   return (
     <CallCard
       lesson={lesson}
       phrase={phrase}
-      userName={userName}
-      userSpeaking={!muted && Boolean(localParticipant?.isSpeaking)}
-      userMuted={muted}
       livePill={joined ? { text: "Live", color: colors.success } : null}
       teacherStatus={AGENT_STATUS[agentStatus]}
       banner={banner}
-      micMuted={muted}
-      micDisabled={!joined}
-      onToggleMic={() => call?.microphone.toggle()}
-      subtitlesOn={subtitlesOn}
-      onToggleSubtitles={onToggleSubtitles}
-      onEndCall={onEndCall}
+      captions={captions}
+      talking={!muted}
+      talkDisabled={!joined}
+      // Push-to-talk: unmute only while the button is held, then mute again on
+      // release. Mic stays muted otherwise so the teacher never echoes itself.
+      onTalkStart={() => void call?.microphone.enable()}
+      onTalkEnd={() => void call?.microphone.disable()}
       overlay={null}
     />
   );
@@ -377,37 +374,26 @@ function LiveCallCard({
 type SetupCallCardProps = {
   lesson: Lesson;
   phrase?: Phrase;
-  userName: string;
   status: LessonCallStatus;
   error: string | null;
-  subtitlesOn: boolean;
-  onToggleSubtitles: () => void;
   onStart: () => void;
 };
 
 function SetupCallCard({
   lesson,
   phrase,
-  userName,
   status,
   error,
-  subtitlesOn,
-  onToggleSubtitles,
   onStart,
 }: SetupCallCardProps) {
   return (
     <CallCard
       lesson={lesson}
       phrase={phrase}
-      userName={userName}
-      userMuted
-      micMuted
-      micDisabled
-      onToggleMic={() => {}}
-      subtitlesOn={subtitlesOn}
-      onToggleSubtitles={onToggleSubtitles}
-      onEndCall={() => {}}
-      endDisabled
+      talking={false}
+      talkDisabled
+      onTalkStart={() => {}}
+      onTalkEnd={() => {}}
       overlay={<SetupOverlay status={status} error={error} onStart={onStart} />}
     />
   );
@@ -522,41 +508,35 @@ function OverlayShell({ children }: { children: React.ReactNode }) {
 type CallCardProps = {
   lesson: Lesson;
   phrase?: Phrase;
-  userName: string;
-  userSpeaking?: boolean;
-  userMuted: boolean;
   livePill?: { text: string; color: string } | null;
   /** AI teacher connection chip (null in the pre-call setup card). */
   teacherStatus?: { text: string; color: string } | null;
   banner?: { text: string; tone: "info" | "warning" } | null;
-  micMuted: boolean;
-  micDisabled: boolean;
-  onToggleMic: () => void;
-  subtitlesOn: boolean;
-  onToggleSubtitles: () => void;
-  onEndCall: () => void;
-  endDisabled?: boolean;
+  /** Live captions for the active call (empty in the pre-call setup card). */
+  captions?: LiveCaption[];
+  /** True while the mic is live (the talk button is held). */
+  talking: boolean;
+  /** Disable the talk button before the call is joined. */
+  talkDisabled: boolean;
+  onTalkStart: () => void;
+  onTalkEnd: () => void;
   overlay: React.ReactNode;
 };
 
 function CallCard({
   lesson,
   phrase,
-  userName,
-  userSpeaking,
-  userMuted,
   livePill,
   teacherStatus,
   banner,
-  micMuted,
-  micDisabled,
-  onToggleMic,
-  subtitlesOn,
-  onToggleSubtitles,
-  onEndCall,
-  endDisabled,
+  captions,
+  talking,
+  talkDisabled,
+  onTalkStart,
+  onTalkEnd,
   overlay,
 }: CallCardProps) {
+  const hasCaptions = !!captions && captions.length > 0;
   return (
     <View
       className="overflow-hidden rounded-3xl border border-border bg-white"
@@ -594,30 +574,6 @@ function CallCard({
           </View>
         )}
 
-        {/* "You" tile (top-right) — the signed-in user on the audio call. */}
-        <View
-          className="absolute right-3 top-3 z-10 h-28 w-20 items-center justify-center overflow-hidden rounded-2xl border-2"
-          style={{
-            backgroundColor: "#1F2540",
-            borderColor: userSpeaking ? colors.success : "#ffffff",
-          }}
-        >
-          <Ionicons name="person" size={30} color="#9aa0b4" />
-          <Text className="text-caption mt-1 text-white" numberOfLines={1}>
-            {userName}
-          </Text>
-          <View
-            className="absolute bottom-1.5 right-1.5 h-5 w-5 items-center justify-center rounded-full"
-            style={{ backgroundColor: userMuted ? colors.error : colors.success }}
-          >
-            <Ionicons
-              name={userMuted ? "mic-off" : "mic"}
-              size={11}
-              color="#ffffff"
-            />
-          </View>
-        </View>
-
         {/* The AI teacher (fox mascot). */}
         <Image
           source={images.mascotWelcome}
@@ -647,83 +603,70 @@ function CallCard({
           </View>
         )}
 
-        {/* Teacher response bubble (bottom). */}
-        <View
-          className="absolute inset-x-4 bottom-4 flex-row items-center rounded-2xl bg-white px-4 py-3"
-          style={styles.soft}
-        >
-          <View className="flex-1 pr-2">
-            <Text className="text-h4 text-ink">{phrase?.text}</Text>
-            {subtitlesOn && phrase?.translation && (
-              <Text className="text-body-sm mt-0.5 text-ink-muted">
-                {phrase.translation}
-              </Text>
-            )}
+        {/* Selected phrase to practice — hidden once live captions take over. */}
+        {!hasCaptions && (
+          <View
+            className="absolute inset-x-4 bottom-4 flex-row items-center rounded-2xl bg-white px-4 py-3"
+            style={styles.soft}
+          >
+            <View className="flex-1 pr-2">
+              <Text className="text-h4 text-ink">{phrase?.text}</Text>
+              {phrase?.translation && (
+                <Text className="text-body-sm mt-0.5 text-ink-muted">
+                  {phrase.translation}
+                </Text>
+              )}
+            </View>
+            <View className="h-9 w-9 items-center justify-center rounded-full bg-primary">
+              <Ionicons name="volume-high" size={18} color="#ffffff" />
+            </View>
           </View>
-          <View className="h-9 w-9 items-center justify-center rounded-full bg-primary">
-            <Ionicons name="volume-high" size={18} color="#ffffff" />
-          </View>
-        </View>
+        )}
 
         {/* Pre-call overlay (start / connecting / error / ended). */}
         {overlay}
       </View>
 
-      {/* Call controls — camera (placeholder), mic, subtitles, end call */}
-      <View className="flex-row items-start justify-between px-4 pt-5">
-        {/* Camera — disabled placeholder (audio-only experience). */}
-        <ControlButton
-          label="Camera"
-          icon={
-            <Ionicons name="videocam-off" size={22} color={colors.inkMuted} />
-          }
-          muted
-          onPress={() => {}}
-        />
+      {/* Live captions — the full transcript, in the same purple as the scene
+          above so the area simply extends downward and never covers the mascot. */}
+      {hasCaptions && (
+        <View className="px-4 pb-4" style={{ backgroundColor: "#ECE9FE" }}>
+          <LiveCaptionsBubble captions={captions} />
+        </View>
+      )}
 
-        {/* Mic — toggles the real published audio track. */}
-        <ControlButton
-          label={micMuted ? "Unmute" : "Mic"}
-          active={!micMuted && !micDisabled}
-          muted={micDisabled}
-          icon={
-            <Ionicons
-              name={micMuted ? "mic-off" : "mic"}
-              size={22}
-              color={micMuted || micDisabled ? colors.inkMuted : "#ffffff"}
-            />
-          }
-          onPress={micDisabled ? () => {} : onToggleMic}
-        />
-
-        {/* Subtitles — toggles the translation under the response. */}
-        <ControlButton
-          label="Subtitles"
-          active={subtitlesOn}
-          icon={
-            <MaterialCommunityIcons
-              name="subtitles-outline"
-              size={22}
-              color={subtitlesOn ? "#ffffff" : colors.inkMuted}
-            />
-          }
-          onPress={onToggleSubtitles}
-        />
-
-        {/* End call — leaves the call, completes the lesson + awards XP. */}
-        <ControlButton
-          label="End Call"
-          danger
-          muted={endDisabled}
-          icon={
-            <MaterialCommunityIcons
-              name="phone-hangup"
-              size={22}
-              color="#ffffff"
-            />
-          }
-          onPress={endDisabled ? () => {} : onEndCall}
-        />
+      {/* Push-to-talk — hold to speak. The mic is muted otherwise so the AI
+          teacher never hears itself (no echo), and speaking interrupts it. */}
+      <View className="items-center px-4 pb-1 pt-6">
+        <Pressable
+          onPressIn={talkDisabled ? undefined : onTalkStart}
+          onPressOut={talkDisabled ? undefined : onTalkEnd}
+          disabled={talkDisabled}
+          className="h-20 w-20 items-center justify-center rounded-full"
+          style={[
+            styles.soft,
+            {
+              backgroundColor: talking ? colors.success : colors.primary,
+              opacity: talkDisabled ? 0.5 : 1,
+            },
+          ]}
+          accessibilityRole="button"
+          accessibilityLabel="Hold to talk"
+        >
+          <Ionicons
+            name={talking ? "mic" : "mic-outline"}
+            size={32}
+            color="#ffffff"
+          />
+        </Pressable>
+        <Text className="text-h4 mt-2.5 text-ink">
+          {talking ? "Listening…" : "Hold to talk"}
+        </Text>
+        <Text className="text-caption mt-0.5 text-ink-muted">
+          {talking
+            ? "Release when you're done speaking"
+            : "Press and hold while you speak"}
+        </Text>
       </View>
 
       {/* Lesson feedback — sample per-session scores */}
@@ -760,50 +703,47 @@ const AGENT_STATUS: Record<AgentStatus, { text: string; color: string }> = {
   failed: { text: "Teacher offline", color: colors.error },
 };
 
-type ControlButtonProps = {
-  label: string;
-  icon: React.ReactNode;
-  onPress: () => void;
-  /** Filled purple background (e.g. mic on, subtitles on). */
-  active?: boolean;
-  /** Red background (end call). */
-  danger?: boolean;
-  /** Dimmed placeholder, e.g. the disabled camera. */
-  muted?: boolean;
-};
-
-/** A round call-control button with a label underneath. */
-function ControlButton({
-  label,
-  icon,
-  onPress,
-  active,
-  danger,
-  muted,
-}: ControlButtonProps) {
-  const bg = danger ? colors.error : active ? colors.primary : "#ffffff";
-
+/**
+ * Live captions panel — the full running transcript, each line labelled
+ * "Teacher" or "You". Lives below the mascot in the purple scene. The list
+ * scrolls (capped height) and keeps the newest line in view.
+ */
+function LiveCaptionsBubble({ captions }: { captions: LiveCaption[] }) {
+  const scrollRef = useRef<ScrollView>(null);
   return (
-    <View className="items-center">
-      <TouchableOpacity
-        activeOpacity={0.85}
-        onPress={onPress}
-        className="h-14 w-14 items-center justify-center rounded-full"
-        style={[
-          styles.soft,
-          {
-            backgroundColor: bg,
-            borderWidth: active || danger ? 0 : 1,
-            borderColor: colors.border,
-            opacity: muted ? 0.6 : 1,
-          },
-        ]}
-        accessibilityRole="button"
-        accessibilityLabel={label}
+    <View className="rounded-2xl bg-white px-4 py-3" style={styles.soft}>
+      <View className="mb-1.5 flex-row items-center">
+        <Ionicons name="chatbubbles" size={13} color={colors.primary} />
+        <Text className="text-caption ml-1.5 text-ink-muted">Live captions</Text>
+      </View>
+      <ScrollView
+        ref={scrollRef}
+        style={{ maxHeight: 180 }}
+        onContentSizeChange={() =>
+          scrollRef.current?.scrollToEnd({ animated: true })
+        }
+        showsVerticalScrollIndicator={false}
       >
-        {icon}
-      </TouchableOpacity>
-      <Text className="text-caption mt-1.5 text-ink-muted">{label}</Text>
+        {captions.map((caption) => {
+          const isTeacher = caption.speaker === "teacher";
+          return (
+            <View key={caption.id} className="mb-1.5 flex-row items-start">
+              <Text
+                className="text-caption mr-2"
+                style={{
+                  width: 56,
+                  color: isTeacher ? colors.primary : colors.success,
+                }}
+              >
+                {isTeacher ? "Teacher" : "You"}
+              </Text>
+              <Text className="text-body-sm flex-1 text-ink">
+                {caption.text}
+              </Text>
+            </View>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 }
@@ -814,56 +754,6 @@ function FeedbackCell({ label, value }: { label: string; value: string }) {
     <View className="flex-1 items-center px-2 py-3">
       <Text className="text-caption text-ink-muted">{label}</Text>
       <Text className="text-h4 mt-0.5 text-success">{value}</Text>
-    </View>
-  );
-}
-
-/** Tabs shown in the static bottom navigation (mirrors components/TabBar). */
-const NAV_TABS = [
-  { route: "/home" as const, label: "Home", icon: "home-outline" as const },
-  { route: "/learn" as const, label: "Learn", icon: "book-outline" as const },
-  { route: "/ai-teacher" as const, label: "AI Teacher", active: true },
-  { route: "/chat" as const, label: "Chat", icon: "chatbubble-outline" as const },
-  { route: "/profile" as const, label: "Profile", icon: "person-outline" as const },
-];
-
-/** Presentational bottom tab bar matching the app's navigation design. */
-function BottomNav({ insetBottom }: { insetBottom: number }) {
-  const router = useRouter();
-
-  return (
-    <View
-      className="flex-row border-t border-border bg-background"
-      style={[styles.navShadow, { paddingBottom: insetBottom || 12 }]}
-    >
-      {NAV_TABS.map((tab) => (
-        <Pressable
-          key={tab.route}
-          onPress={() => router.push(tab.route)}
-          className="h-19 flex-1 items-center pt-5.5"
-          accessibilityRole="button"
-          accessibilityLabel={tab.label}
-        >
-          <View className="h-8 items-center justify-center">
-            {tab.active ? (
-              <View className="h-13 w-13 items-center justify-center rounded-full bg-primary">
-                <MaterialCommunityIcons
-                  name="robot-happy"
-                  size={24}
-                  color="#ffffff"
-                />
-              </View>
-            ) : (
-              <Ionicons name={tab.icon} size={24} color={colors.inkMuted} />
-            )}
-          </View>
-          {!tab.active && (
-            <Text className="text-caption mt-1.5 font-poppins-medium text-ink-muted">
-              {tab.label}
-            </Text>
-          )}
-        </Pressable>
-      ))}
     </View>
   );
 }
@@ -879,17 +769,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 3 },
       },
       android: { elevation: 4 },
-    }),
-  },
-  navShadow: {
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000000",
-        shadowOpacity: 0.06,
-        shadowRadius: 12,
-        shadowOffset: { width: 0, height: -2 },
-      },
-      android: { elevation: 12 },
     }),
   },
 });
