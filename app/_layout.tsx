@@ -10,6 +10,7 @@ import { PostHogProvider } from "posthog-react-native";
 import { useEffect, useRef } from "react";
 import { Platform } from "react-native";
 
+import { StreamVideoProvider } from "@/components/StreamVideoProvider";
 import { posthog } from "@/lib/posthog";
 import { fontAssets } from "@/theme";
 
@@ -86,7 +87,9 @@ export default function RootLayout() {
         }}
       >
         <StatusBar style="dark" />
-        <Stack screenOptions={{ headerShown: false }} />
+        <StreamVideoProvider>
+          <Stack screenOptions={{ headerShown: false }} />
+        </StreamVideoProvider>
       </PostHogProvider>
     </ClerkProvider>
   );
