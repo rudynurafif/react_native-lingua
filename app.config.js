@@ -10,8 +10,10 @@ export default {
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
+      bundleIdentifier: "com.rudynurafif.duolingoclone",
     },
     android: {
+      package: "com.rudynurafif.duolingoclone",
       adaptiveIcon: {
         backgroundColor: "#E6F4FE",
         foregroundImage: "./assets/images/android-icon-foreground.png",
@@ -22,7 +24,10 @@ export default {
       predictiveBackGestureEnabled: false,
     },
     web: {
-      output: "static",
+      // "server" (not "static") is required so the Expo Router API routes
+      // (app/api/**+api.ts) run as real server handlers — that's where the
+      // Stream secret lives and where call/token creation happens.
+      output: "server",
       favicon: "./assets/images/favicon.png",
     },
     plugins: [
@@ -43,6 +48,21 @@ export default {
       "expo-secure-store",
       "expo-web-browser",
       "expo-localization",
+      // Stream Video — wires the native WebRTC side on prebuild.
+      "@stream-io/video-react-native-sdk",
+      [
+        "@config-plugins/react-native-webrtc",
+        {
+          // Audio lessons only need the mic, but the WebRTC module declares
+          // the camera permission too; give both honest, user-facing copy.
+          cameraPermission:
+            "Lingua needs camera access for video lessons.",
+          microphonePermission:
+            "Lingua needs microphone access so you can speak with your AI teacher during audio lessons.",
+        },
+      ],
+      // Stream Video requires Android minSdk 24.
+      ["expo-build-properties", { android: { minSdkVersion: 24 } }],
     ],
     experiments: {
       typedRoutes: true,
