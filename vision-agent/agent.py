@@ -240,7 +240,11 @@ def forward_live_captions(agent: Agent) -> None:
 async def _send_caption(agent: Agent, payload: dict[str, Any]) -> None:
     """Best-effort delivery of one caption event; never crash the pipeline."""
     try:
-        await agent.edge.send_custom_event(payload)
+        # Bound the send so a stalled network call can't keep this background
+        # task (and its slot in `pending`) alive forever and leak memory.
+        await asyncio.wait_for(agent.edge.send_custom_event(payload), timeout=5.0)
+    except asyncio.TimeoutError:
+        logger.warning("Timed out forwarding live caption")
     except Exception:
         logger.exception("Failed to forward live caption")
 

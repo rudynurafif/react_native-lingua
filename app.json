@@ -1,12 +1,15 @@
 {
   "expo": {
-    "name": "duolingo-clone",
-    "slug": "duolingo-clone",
+    "name": "lingua",
+    "slug": "lingua",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "duolingoclone",
     "userInterfaceStyle": "light",
+    "androidNavigationBar": {
+      "barStyle": "dark-content"
+    },
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
