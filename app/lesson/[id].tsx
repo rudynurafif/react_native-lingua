@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { usePostHog } from "posthog-react-native";
+import { useEffect, useRef } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -34,6 +35,40 @@ export default function LessonDetailScreen() {
   const completeLesson = useProgressStore((s) => s.completeLesson);
   const completed = useProgressStore((s) => s.completedLessons.includes(id));
 
+  // Analytics: capture when a lesson is opened, and whether the learner leaves
+  // before finishing. `startTimeRef` is captured on mount so the abandoned
+  // duration is accurate; `completedRef` lets the unmount cleanup tell a real
+  // "abandon" apart from a normal completion. It's seeded from `completed` so
+  // re-opening an already-finished lesson and leaving doesn't count as one.
+  const startTimeRef = useRef(Date.now());
+  const completedRef = useRef(completed);
+
+  useEffect(() => {
+    if (!lesson) return;
+
+    const startTime = startTimeRef.current;
+
+    posthog.capture("lesson_started", {
+      lesson_id: lesson.id,
+      language: lesson.languageId,
+      lesson_number: lesson.order,
+    });
+
+    return () => {
+      if (completedRef.current) return;
+      posthog.capture("lesson_abandoned", {
+        lesson_id: lesson.id,
+        time_into_lesson_seconds: Math.round((Date.now() - startTime) / 1000),
+        // This preview screen has no per-question stepper yet, so there's no
+        // question index to report — 0 until an interactive player is built.
+        last_question_index: 0,
+      });
+    };
+    // Fire once on mount / clean up on unmount — `lesson` is fixed for the
+    // screen's lifetime and `posthog` is stable from the provider.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const goBack = () => {
     if (router.canGoBack()) router.back();
     else router.push("/learn");
@@ -60,6 +95,9 @@ export default function LessonDetailScreen() {
 
   const handleComplete = () => {
     completeLesson(lesson.id, lesson.xpReward);
+    // Mark complete before navigating so the unmount cleanup skips
+    // "lesson_abandoned" — this was a finish, not an abandon.
+    completedRef.current = true;
     posthog.capture("lesson_completed", {
       lesson_id: lesson.id,
       language_code: lesson.languageId,

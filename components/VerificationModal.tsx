@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Keyboard,
-  KeyboardAvoidingView,
   Modal,
   Platform,
   Pressable,
@@ -11,6 +10,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors } from "@/theme";
 
@@ -43,7 +43,9 @@ export function VerificationModal({
   onComplete,
 }: VerificationModalProps) {
   const [code, setCode] = useState("");
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const inputRef = useRef<TextInput>(null);
+  const insets = useSafeAreaInsets();
 
   // Reset the code every time the modal opens so a re-open starts fresh.
   useEffect(() => {
@@ -51,6 +53,26 @@ export function VerificationModal({
       setCode("");
     }
   }, [visible]);
+
+  // Lift the sheet above the keyboard ourselves. A RN `Modal` renders in its
+  // own Android window that ignores the activity's `adjustResize`, so
+  // `KeyboardAvoidingView` doesn't push content up there — the keyboard would
+  // cover the code inputs. Instead we track the keyboard height and pad the
+  // sheet by it. (iOS uses the *will* events for a smoother slide.)
+  useEffect(() => {
+    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    const showSub = Keyboard.addListener(showEvent, (e) =>
+      setKeyboardHeight(e.endCoordinates.height),
+    );
+    const hideSub = Keyboard.addListener(hideEvent, () => setKeyboardHeight(0));
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   // Raises the soft keyboard. On Android, calling `.focus()` on a TextInput
   // that the OS still considers focused (e.g. after the keyboard was dismissed
@@ -88,6 +110,23 @@ export function VerificationModal({
     }
   };
 
+  // How far to lift the sheet so it sits right above the keyboard.
+  // In edge-to-edge mode (Expo SDK 54+), Android reports the keyboard height
+  // only up to the navigation-bar inset, so lifting by the raw height leaves
+  // the sheet a little short and the bar clips the code inputs. Add the bottom
+  // inset back on Android to fully clear the keyboard. iOS reports the full
+  // height already, so it's used as-is.
+  const liftAboveKeyboard =
+    keyboardHeight > 0 && Platform.OS === "android"
+      ? keyboardHeight + insets.bottom
+      : keyboardHeight;
+
+  // Bottom padding inside the sheet. With the keyboard up the navigation bar is
+  // hidden behind it, so a fixed pad is enough. With the keyboard down (and
+  // edge-to-edge on), add the bottom inset so the content clears the system
+  // bar instead of sitting flush against it.
+  const sheetPaddingBottom = keyboardHeight > 0 ? 48 : 48 + insets.bottom;
+
   return (
     <Modal
       visible={visible}
@@ -104,11 +143,14 @@ export function VerificationModal({
           style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(13,19,43,0.45)" }]}
         />
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        <View
+          className="rounded-t-3xl bg-background px-6 pt-3"
+          style={{
+            marginBottom: liftAboveKeyboard,
+            paddingBottom: sheetPaddingBottom,
+          }}
         >
-          <View className="rounded-t-3xl bg-background px-6 pb-12 pt-3">
-            {/* Grabber */}
+          {/* Grabber */}
             <View className="mb-5 h-1.5 w-12 self-center rounded-full bg-border" />
 
             <Text className="text-h2 text-ink">Check your email</Text>
@@ -173,8 +215,7 @@ export function VerificationModal({
                 {error}
               </Text>
             )}
-          </View>
-        </KeyboardAvoidingView>
+        </View>
       </View>
     </Modal>
   );

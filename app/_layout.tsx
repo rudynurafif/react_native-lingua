@@ -10,6 +10,7 @@ import { PostHogProvider } from "posthog-react-native";
 import { useEffect, useRef } from "react";
 import { Platform } from "react-native";
 
+import { IdentifyUser } from "@/components/IdentifyUser";
 import { StreamVideoProvider } from "@/components/StreamVideoProvider";
 import { posthog } from "@/lib/posthog";
 import { fontAssets } from "@/theme";
@@ -87,6 +88,7 @@ export default function RootLayout() {
         }}
       >
         <StatusBar style="dark" />
+        <IdentifyUser />
         <StreamVideoProvider>
           <Stack screenOptions={{ headerShown: false }} />
         </StreamVideoProvider>

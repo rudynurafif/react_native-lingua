@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "@/components/Image";
 import { LanguageCard } from "@/components/LanguageCard";
 import { images } from "@/constants/images";
-import { languages } from "@/data/languages";
+import { getLanguage, languages } from "@/data/languages";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { colors } from "@/theme";
 import type { LanguageCode } from "@/types/learning";
@@ -50,9 +50,10 @@ export default function Languages() {
   const handleConfirm = () => {
     // Persist the choice, then go to the home route. `replace` so the back
     // gesture doesn't return to language selection after confirming.
+    const language = getLanguage(selectedId);
     posthog.capture("language_selected", {
       language_code: selectedId,
-      is_change: storedLanguage !== null && storedLanguage !== selectedId,
+      language_name: language?.name ?? selectedId,
     });
     setLanguage(selectedId);
     router.replace("/");

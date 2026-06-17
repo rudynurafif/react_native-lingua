@@ -18,6 +18,7 @@ Run it:
     uv run agent.py serve    # HTTP server (production) — used by the Expo app
 """
 
+import asyncio
 import logging
 import os
 from pathlib import Path
@@ -42,6 +43,39 @@ logger = logging.getLogger(__name__)
 # present, e.g. the local `run` demo). The mobile app always supplies one.
 DEFAULT_LANGUAGE = os.getenv("TEACH_LANGUAGE", "Spanish")
 
+# Custom call-event tag for live captions. The mobile app listens for events
+# with this `kind` via `call.on("custom", ...)` and renders them as subtitles.
+CAPTION_EVENT_KIND = "lesson.caption"
+
+# Voice-activity / turn-taking config for the realtime session.
+#
+# We use `server_vad` (silence-based) instead of the plugin's default
+# `semantic_vad`. In a "repeat after me" lesson the learner often answers with a
+# single short word like "hola", which semantic_vad sometimes drops because it
+# doesn't look like a complete thought — so the teacher seems to ignore them.
+# server_vad just waits for a short pause, so every short answer is heard.
+#
+# Tuning knobs if needed:
+#   - silence_duration_ms: raise it if the agent cuts you off before you finish.
+#   - threshold: raise it (e.g. 0.6) if background/mic noise triggers false turns
+#     (handy on a glitchy emulator mic); lower it if quiet speech is missed.
+REALTIME_SESSION: dict[str, Any] = {
+    "type": "realtime",
+    "audio": {
+        "input": {
+            "transcription": {"model": "gpt-4o-mini-transcribe"},
+            "turn_detection": {
+                "type": "server_vad",
+                "threshold": 0.5,
+                "prefix_padding_ms": 300,
+                "silence_duration_ms": 600,
+                "create_response": True,
+                "interrupt_response": True,
+            },
+        },
+    },
+}
+
 
 def build_instructions(ctx: dict[str, Any]) -> str:
     """Build the teacher's system prompt from the lesson's custom call data.
@@ -57,21 +91,44 @@ def build_instructions(ctx: dict[str, Any]) -> str:
     phrases = ctx.get("phrases") or []
 
     lines: list[str] = [
-        f"You are a friendly, patient AI language teacher helping a learner "
-        f"practise {language}.",
+        f"You are a warm, upbeat, real-life {language} teacher sitting with one "
+        "learner. You sound human and genuinely happy to be teaching them.",
         "",
         "Rules you must always follow:",
-        "1. ALWAYS speak in English. All explanations, instructions, praise and "
-        "corrections are in English.",
-        f"2. Teach {language} *through* English: introduce a word or short "
-        f"phrase in {language}, say it slowly, then explain its meaning and use "
-        "in English.",
-        "3. Keep replies short and conversational — this is a spoken lesson, not "
-        "an essay. One idea at a time.",
-        "4. Gently correct mistakes, then have the learner try again.",
-        "5. Be encouraging and warm. Celebrate small wins.",
+        "1. This is a live, back-and-forth conversation — never a lecture or a "
+        "recording. Say ONE short thing, then STOP talking and wait silently for "
+        "the learner to answer. Never give two pieces of information in a row "
+        "without hearing from them first.",
+        "2. Always end your turn with a clear cue and then go quiet — for "
+        'example, "Can you try saying it?" Do not answer for the learner, and do '
+        "not keep going until they have spoken.",
+        "3. When the learner speaks, react to what they actually said: warmly "
+        "praise what was right, gently fix what was off.",
+        "4. KEEP MOVING. Once the learner says an item correctly — or after at "
+        "most two tries — praise them and move ON to the NEXT word or phrase in "
+        "the lesson. Never ask for the same word more than twice in a row; don't "
+        "get stuck drilling one item.",
+        "5. Work through ALL of this lesson's words and phrases, roughly in "
+        "order. When you've practised them all, tell the learner they've finished "
+        "this lesson, congratulate them warmly, and wrap up — don't invent extra "
+        "drills or loop forever. If they say they've got it, sound bored, or ask "
+        "to move on, advance to the next item right away.",
+        "6. Speak mostly in English, the way a real teacher talks out loud — "
+        "warm, natural and energetic. Use contractions like you're, let's and "
+        "that's, and keep sentences short.",
+        f"7. Teach {language} through English: bring in ONE {language} word or "
+        f"short phrase at a time, say it slowly, give its English meaning, then "
+        "ask the learner to say it back — and wait for them.",
+        "8. Stay strictly inside THIS lesson's goal, vocabulary and phrases. "
+        f"Don't drift to other topics or other words, and never switch to a "
+        f"language other than English or {language}.",
+        "9. Keep every turn to one or two short, conversational sentences. This "
+        "is spoken, not written — one idea at a time.",
+        "10. Be genuinely encouraging and human — celebrate small wins with real "
+        "warmth and a bit of energy.",
         "Do not use markdown, emojis or special characters — your words are "
-        "spoken aloud.",
+        "spoken aloud. Never narrate your own planning out loud (no \"let me "
+        "think how to...\"); just talk to the learner.",
     ]
 
     if persona:
@@ -103,8 +160,9 @@ def build_instructions(ctx: dict[str, Any]) -> str:
 
     lines += [
         "",
-        "Stay focused on this lesson's vocabulary and phrases. Begin by greeting "
-        "the learner and inviting them to try the first item.",
+        "Stay focused on this lesson's vocabulary and phrases only. Start with a "
+        "short, warm hello and ONE invitation to try the first word — then stop "
+        "and wait for the learner to answer before you say anything else.",
     ]
     return "\n".join(lines)
 
@@ -121,8 +179,70 @@ def create_agent() -> Agent:
         instructions=build_instructions({}),
         # OpenAI Realtime = native speech-to-speech, so NO separate stt/tts.
         # send_video=False keeps this a voice-only lesson (no camera frames).
-        llm=openai.Realtime(voice="marin", send_video=False),
+        # realtime_session swaps the default semantic_vad for a tuned server_vad
+        # so short answers like "hola" are always heard (see REALTIME_SESSION).
+        llm=openai.Realtime(
+            voice="marin",
+            send_video=False,
+            realtime_session=REALTIME_SESSION,
+        ),
     )
+
+
+def forward_live_captions(agent: Agent) -> None:
+    """Relay every spoken transcript to the call so the app can show live captions.
+
+    With OpenAI Realtime there is no separate STT step we can subscribe to: the
+    user's and the teacher's transcripts surface only when the framework writes
+    them into the agent's `conversation`. So we wrap `conversation.upsert_message`
+    — after each transcript is recorded we send a tiny custom event to everyone on
+    the call (`kind=lesson.caption`). The mobile app listens via
+    `call.on("custom", ...)`.
+
+    The send is fire-and-forget (a background task) so it never adds latency to
+    the realtime speech pipeline, which calls `upsert_message` on the hot path.
+    """
+    conversation = agent.conversation
+    if conversation is None:
+        logger.warning("No conversation on the agent; live captions disabled")
+        return
+
+    original_upsert = conversation.upsert_message
+    pending: set[asyncio.Task[None]] = set()
+
+    async def upsert_and_caption(*args: Any, **kwargs: Any):
+        message = await original_upsert(*args, **kwargs)
+
+        # The realtime flow always calls upsert with keyword arguments.
+        role = kwargs.get("role", "")
+        completed = bool(kwargs.get("completed", True))
+        text = (message.content or "").strip()
+
+        # Only the two human-visible roles become captions ("user" = the learner,
+        # "assistant" = the AI teacher). System/empty messages are skipped.
+        if text and role in ("user", "assistant"):
+            payload = {
+                "kind": CAPTION_EVENT_KIND,
+                "speaker": "teacher" if role == "assistant" else "learner",
+                "text": text,
+                "final": completed,
+                "id": message.id,
+            }
+            task = asyncio.create_task(_send_caption(agent, payload))
+            pending.add(task)
+            task.add_done_callback(pending.discard)
+
+        return message
+
+    conversation.upsert_message = upsert_and_caption  # type: ignore[method-assign]
+
+
+async def _send_caption(agent: Agent, payload: dict[str, Any]) -> None:
+    """Best-effort delivery of one caption event; never crash the pipeline."""
+    try:
+        await agent.edge.send_custom_event(payload)
+    except Exception:
+        logger.exception("Failed to forward live caption")
 
 
 async def join_call(agent: Agent, call_type: str, call_id: str) -> None:
@@ -138,8 +258,26 @@ async def join_call(agent: Agent, call_type: str, call_id: str) -> None:
         logger.exception("Could not read call custom data; using defaults")
 
     # Tailor the teacher to this exact lesson before the realtime session opens.
-    agent.instructions = Instructions(input_text=build_instructions(ctx))
+    #
+    # IMPORTANT: setting `agent.instructions` alone is NOT enough. The Agent only
+    # pushes instructions to the LLM once, at construction (via _attach_agent →
+    # llm.set_instructions), using the *default* instructions. If we just reassign
+    # `agent.instructions` here, the realtime session that `agent.join()` opens
+    # still carries those defaults — so the teacher ignores the chosen language
+    # and lesson and falls back to the Spanish placeholder. We must re-push the
+    # per-lesson instructions to the LLM ourselves, before join/connect.
+    instructions = Instructions(input_text=build_instructions(ctx))
+    agent.instructions = instructions
+    agent.llm.set_instructions(instructions)
+
     language = str(ctx.get("languageName") or DEFAULT_LANGUAGE)
+    logger.info(
+        "📚 Lesson loaded — language=%s, title=%s, vocab=%d, phrases=%d",
+        language,
+        ctx.get("lessonTitle") or "(default/fallback)",
+        len(ctx.get("vocabulary") or []),
+        len(ctx.get("phrases") or []),
+    )
 
     # audio_room calls start in backstage; go live so the agent (admin role) can
     # publish audio. Best-effort — the call may already be live.
@@ -149,10 +287,16 @@ async def join_call(agent: Agent, call_type: str, call_id: str) -> None:
         logger.exception("go_live failed (the call may already be live)")
 
     async with agent.join(call):
+        # Stream each transcript to the call as a custom event so the mobile app
+        # can show live captions for both the learner and the teacher. Set up
+        # before the greeting so the teacher's first words are captioned too.
+        forward_live_captions(agent)
+
         await agent.simple_response(
-            f"Warmly greet the learner in English, introduce yourself as their "
-            f"{language} teacher for this lesson, and invite them to practise the "
-            "first word or phrase. Keep it to one or two sentences."
+            f"Give a short, warm, upbeat hello in English, introduce yourself as "
+            f"their {language} teacher for this lesson, and invite them to try "
+            "just the first word with you. Then STOP and wait for them to speak — "
+            "say only one or two sentences and do not continue on your own."
         )
         await agent.finish()
 

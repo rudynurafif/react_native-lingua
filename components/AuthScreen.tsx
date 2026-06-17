@@ -1,10 +1,11 @@
-import { useAuth, useSignIn, useSignUp, useSSO } from "@clerk/expo";
+import { useSignIn, useSignUp, useSSO } from "@clerk/expo";
 import { Ionicons } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -84,20 +85,11 @@ export function AuthScreen({
   const { signUp, errors: signUpErrors } = useSignUp();
   const { signIn, errors: signInErrors } = useSignIn();
   const { startSSOFlow } = useSSO();
-  const { isLoaded: authLoaded, isSignedIn, userId } = useAuth();
 
-  // The email flows identify PostHog synchronously (the email is in scope).
-  // OAuth can't: Clerk's user resolves asynchronously after setActive(), so we
-  // flag the pending OAuth sign-in here and identify in the effect below once
-  // Clerk reports the user. Gating on the ref avoids re-identifying email users.
-  const oauthPending = useRef(false);
-
-  useEffect(() => {
-    if (oauthPending.current && authLoaded && isSignedIn && userId) {
-      oauthPending.current = false;
-      posthog.identify(userId);
-    }
-  }, [authLoaded, isSignedIn, userId, posthog]);
+  // PostHog identification is handled centrally by <IdentifyUser /> in the root
+  // layout, which calls `identify` with the Clerk user id once a session is
+  // active. Keeping it in one place means every flow (email, OAuth, restored
+  // session) shares the same distinct id instead of fragmenting the profile.
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -189,6 +181,11 @@ export function AuthScreen({
       }
 
       setVerifyError(null);
+      // Drop the email keyboard before the modal opens. On Android, opening a
+      // Modal while the keyboard is still up leaves the sheet stuck behind it
+      // until the keyboard is toggled; dismissing first lets the modal open
+      // cleanly and raise its own keyboard via `onShow`.
+      Keyboard.dismiss();
       setModalVisible(true);
     } catch (err) {
       setFormError(getClerkErrorMessage(err));
@@ -222,10 +219,6 @@ export function AuthScreen({
             setVerifyError(getClerkErrorMessage(finalized.error));
             return;
           }
-          posthog.identify(email.trim(), {
-            $set: { email: email.trim() },
-            $set_once: { first_sign_up_date: new Date().toISOString() },
-          });
           posthog.capture("user_signed_up");
           finishAuth();
         } else {
@@ -251,9 +244,6 @@ export function AuthScreen({
             setVerifyError(getClerkErrorMessage(finalized.error));
             return;
           }
-          posthog.identify(email.trim(), {
-            $set: { email: email.trim() },
-          });
           posthog.capture("user_signed_in");
           finishAuth();
         } else {
@@ -280,8 +270,6 @@ export function AuthScreen({
       });
 
       if (createdSessionId && setActive) {
-        // Tell the effect above to identify once Clerk's user resolves.
-        oauthPending.current = true;
         await setActive({ session: createdSessionId });
         posthog.capture("user_signed_in", { method: strategy });
         router.replace("/");

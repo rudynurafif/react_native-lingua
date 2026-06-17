@@ -86,7 +86,7 @@ export default function Onboarding() {
               textClassName="text-ink"
               rotate="-9deg"
               tailSide="left"
-              position={{ top: 56, left: 0 }}
+              position={{ top: 16, left: 30 }}
             />
 
             {/* ¡Hola! — upper right, tilted right */}
@@ -96,7 +96,7 @@ export default function Onboarding() {
               textClassName="text-primary"
               rotate="9deg"
               tailSide="left"
-              position={{ top: 28, right: 0 }}
+              position={{ top: 8, right: 20 }}
             />
 
             {/* 你好! — middle right, tilted right */}
@@ -106,7 +106,7 @@ export default function Onboarding() {
               textClassName="text-error"
               rotate="7deg"
               tailSide="left"
-              position={{ top: 150, right: 8 }}
+              position={{ top: 88, right: -18 }}
             />
           </View>
         </View>
